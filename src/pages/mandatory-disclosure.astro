@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro'; import Head from '../components/Head.astro';
+// Add a PDF to public/documents and put its path as the second value to publish it.
+const A = [['Name of the school','RIET International School'],['Affiliation No.','1530488'],['School code','16441'],['Complete address with PIN code','At-Thakurpatna, Po-Korei, Ps-Panikoili, Dist.-Jajpur, Odisha, 755015'],['Principal’s name and qualifications','Dr. Subash Chandra Sahoo (M.A., B.Ed.)'],['School email ID','hello@rietinternationalschool.com'],['Contact details','+91 73777 79000']];
+const B = [['Affiliation / upgradation letter and recent extension of affiliation, if any','/documents/cbse-affiliation-letter.pdf'],['Societies / trust / company registration or renewal certificate',''],['No Objection Certificate (NOC) issued by the State Govt. / UT, if applicable',''],['Recognition certificate under RTE Act, 2009, and its renewal if applicable','/documents/rte-recognition-certificate.pdf'],['Valid building safety certificate as per the National Building Code',''],['Valid fire safety certificate issued by the competent authority',''],['DEO certificate for affiliation / upgradation / extension, or self certification by school',''],['Valid water, health and sanitation certificates',''],['Valid land certificates','']];
+const C = [['Fee structure of the school',''],['Annual academic calendar',''],['List of School Management Committee (SMC)',''],['List of Parents Teachers Association (PTA) members',''],['Last three-year result of the board examination, as per applicability','']];
+const D = [['Principal','01'],['Total teachers','27'],['PGT','06'],['TGT','06'],['PRT','07'],['Teachers section ratio','1:1.5'],['Special educator','01'],['Counsellor and wellness teacher','02']];
+const E = [['Total campus area','6075 sqm'],['Number and size of classrooms','35 and 46 sqm'],['Number and size of laboratories including computer lab','6 and 56 sqm'],['Internet facility','Yes'],['Girls toilets','10'],['Boys toilets','10']];
+---
+<Base title="Mandatory public disclosure | RIET International School" description="Statutory information of RIET International School as per CBSE Affiliation Bye-Laws.">
+  <Head title="Mandatory public disclosure" lead="Statutory information as per CBSE Affiliation Bye-Laws, for the Thakurpatna campus." />
+  <div class="wrap disc-page">
+    <section><h2>A. General information</h2><table><tbody>{A.map(([k,v]) => <tr><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody></table></section>
+    <section><h2>B. Documents and information</h2><table><tbody>{B.map(([k,v]) => <tr><th scope="row">{k}</th><td>{v ? <a href={v}>View document</a> : 'Not available at the moment'}</td></tr>)}</tbody></table></section>
+    <section><h2>C. Results and academics</h2><table><tbody>{C.map(([k,v]) => <tr><th scope="row">{k}</th><td>{v ? <a href={v}>View document</a> : 'Not available at the moment'}</td></tr>)}<tr><th scope="row">Result, Class X</th><td>N/A</td></tr><tr><th scope="row">Result, Class VIII</th><td>N/A</td></tr></tbody></table></section>
+    <section><h2>D. Teaching staff</h2><table><tbody>{D.map(([k,v]) => <tr><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody></table></section>
+    <section><h2>E. School infrastructure</h2><table><tbody>{E.map(([k,v]) => <tr><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody></table></section>
+  </div>
+</Base>

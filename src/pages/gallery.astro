@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro'; import Head from '../components/Head.astro';
+import { Image, getImage } from 'astro:assets'; import { img } from '../site';
+const items = [['assembly-cheer','A day out together','Trips'],['sambalpuri-dance','Sambalpuri dance','Culture'],['sports-march','Annual Sports, VSS Nagar','Sports'],['science-fair','Science Fair','Learning'],['saraswati-puja','Saraswati Puja','Culture'],['classical-dance','Annual function','Culture'],['science-centre','Regional Science Centre','Trips'],['sports-podium','Winners','Sports'],['christmas','Christmas','Culture'],['campus-ground','Campus','Campus'],['study-tour','Study tour','Trips'],['foundation-day','16th Foundation Day','Culture'],['raksha-bandhan','Raksha Bandhan','Culture'],['annual-exam','Annual exam','Learning'],['group-dance','On stage','Culture'],['school-bus','The yellow bus','Trips'],['cbse-welcome','CBSE affiliation','Learning'],['campus-entrance','Campus entrance','Campus']];
+const full = await Promise.all(items.map(async ([i]) => (await getImage({ src: img(i), format: 'webp' })).src));
+const cats = ['All','Culture','Sports','Trips','Learning','Campus'];
+---
+<Base title="Gallery | RIET International School" description="Photos from festivals, sports, study tours and classrooms at RIET International School.">
+  <Head title="This is what school feels like." lead="Real days, real students, no stock photos." />
+  <section class="wrap gal">
+    <div class="chips" role="group" aria-label="Filter photos">{cats.map((c, i) => <button aria-pressed={i === 0 ? 'true' : 'false'} data-c={c}>{c}</button>)}</div>
+    <div class="grid">{items.map(([i, t, c], n) => <button data-cat={c} data-full={full[n]} data-t={t}><Image src={img(i)} alt={t} widths={[420, 800]} sizes="(max-width:700px) 92vw, 33vw" /><span>{t}</span></button>)}</div>
+  </section>
+  <dialog class="box"><img alt="" /><p></p><button autofocus>Close</button></dialog>
+</Base>
+<script>
+  const g = [...document.querySelectorAll<HTMLButtonElement>('.grid button')], chips = [...document.querySelectorAll<HTMLButtonElement>('.chips button')];
+  chips.forEach(b => b.onclick = () => { chips.forEach(x => x.setAttribute('aria-pressed', String(x === b))); g.forEach(x => x.hidden = b.dataset.c !== 'All' && x.dataset.cat !== b.dataset.c); });
+  const d = document.querySelector('dialog')!;
+  g.forEach(b => b.onclick = () => { const i = d.querySelector('img')!; i.src = b.dataset.full!; i.alt = b.dataset.t!; d.querySelector('p')!.textContent = b.dataset.t!; d.showModal(); });
+  d.onclick = e => { if (e.target === d || (e.target as Element).tagName === 'BUTTON') d.close(); };
+</script>

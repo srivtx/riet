@@ -1,0 +1,15 @@
+---
+// A sentence, not a form: three taps and WhatsApp opens with the message written.
+import { classes, campuses } from '../site';
+---
+<form class="ask" data-ask>
+  <p>
+    My child is joining
+    <label><span class="sr">Class</span><select name="grade">{classes.map(c => <option selected={c==='Class 1'}>{c}</option>)}</select></label>
+    and we live near
+    <label><span class="sr">Campus</span><select name="campus">{campuses.map(c => <option>{`${c.name}, ${c.city}`}</option>)}</select></label>.
+    We would like
+    <label><span class="sr">Schooling type</span><select name="mode"><option>day school</option><option>day boarding</option><option>boarding</option></select></label>.
+  </p>
+  <button class="btn gold" type="submit">Ask on WhatsApp</button>
+</form>

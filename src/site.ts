@@ -1,0 +1,38 @@
+// Edit school facts here: every page reads from this file.
+export const phone = '+91 73777 79000';
+export const tel = 'tel:+917377779000';
+export const email = 'hello@rietinternationalschool.com';
+export const wa = (text = 'Hello RIET, I would like to know more about admission.') =>
+  `https://wa.me/917377779000?text=${encodeURIComponent(text)}`;
+export const hours = 'Monday to Saturday, 9:00 am to 5:00 pm';
+
+export const nav = [
+  ['About', '/about/'],
+  ['Academics', '/academics/'],
+  ['Campus life', '/campus-life/'],
+  ['Gallery', '/gallery/'],
+  ['Admissions', '/admissions/'],
+  ['Contact', '/contact/'],
+];
+
+export const social = [
+  ['YouTube', 'https://youtube.com/@rietinternationalschool'],
+  ['Instagram', 'https://www.instagram.com/rietschool'],
+  ['Facebook', 'https://www.facebook.com/share/1C6AATcJQM/'],
+  ['LinkedIn', 'https://www.linkedin.com/company/riet-international-school'],
+];
+
+export const campuses = [
+  { name: 'VSS Nagar', city: 'Bhubaneswar', lines: 'RIET House, 4755, VSS Nagar, Bhubaneswar, Odisha 751010', map: 'https://maps.app.goo.gl/me1RKzKjYSAEUbFv5', note: 'Main campus' },
+  { name: 'Thakurpatna', city: 'Jajpur Road', lines: 'RIET House, Thakurpatna, Sankhachilla, Jajpur Road', map: 'https://maps.app.goo.gl/N9Rk5Jcb99VPcsqn6', note: 'CBSE affiliated, No. 1530488' },
+  { name: 'Ganesh Bazar', city: 'Byasanagar', lines: 'Ganesh Bazar, near Government Hospital, Byasanagar, Jajpur Road', map: 'https://maps.app.goo.gl/krBs2XniQfJykqJx9', note: 'In the heart of town' },
+];
+
+export const classes = ['Pre-Nursery', 'Nursery', 'LKG', 'UKG', ...Array.from({ length: 12 }, (_, i) => `Class ${i + 1}`)];
+export const videos = [
+  { id: 'YRY0DbYCtjw', img: 'video-principal', title: 'A message from the Principal, Bhubaneswar', time: '1:24' },
+  { id: 'H5uNLLPDShY', img: 'video-teachers', title: 'Teachers on life at RIET', time: '1:37' },
+  { id: 'hvrFPh7NvqI', img: 'classical-dance', title: 'Students perform at the annual function', time: '4:27' },
+];
+const files = import.meta.glob<{ default: ImageMetadata }>('./assets/*.{jpg,png}', { eager: true });
+export const img = (n: string) => (files[`./assets/${n}.jpg`] ?? files[`./assets/${n}.png`]).default;

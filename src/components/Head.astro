@@ -1,0 +1,9 @@
+---
+interface Props { title: string; lead: string; img?: ImageMetadata; alt?: string; pos?: string }
+import { Image } from 'astro:assets';
+const { title, lead, img, alt = '', pos = 'center' } = Astro.props;
+---
+<section class:list={['page-head', { bare: !img }]}><div class="wrap">
+  <div><h1>{title}</h1><p class="lead">{lead}</p></div>
+  {img && <div class="arch"><Image src={img} alt={alt} widths={[480, 800]} sizes="(max-width:800px) 92vw, 46vw" loading="eager" style={`object-position:${pos}`} /></div>}
+</div></section>

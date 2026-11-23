@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro'; import Head from '../components/Head.astro'; import Close from '../components/Close.astro';
+import { Image } from 'astro:assets'; import { img } from '../site';
+const groups = [['Learn',['Smart classrooms','Physics, chemistry and biology labs','Computer lab','Library and digital resources']],['Create',['Art studio','Music room','Performance space for drama and dance']],['Play',['Outdoor sports and playgrounds','Indoor games','Fitness areas']],['Feel cared for',['Clean, hygienic dining','Health and wellness support','Counselling','Campus safety measures']]] as [string, string[]][];
+---
+<Base title="Campus life | RIET International School" description="Classrooms, labs, library, sports, arts, transport and student care at RIET International School.">
+  <Head title="Room to run, space to think." lead="Safe, stimulating campuses with natural light, green spaces and purpose-built rooms for every kind of learner." img={img('campus-ground')} alt="Students playing in front of the campus building" pos="60% 60%" />
+  <section class="wrap facts"><h2>Thakurpatna campus in numbers</h2><dl><div><dd>6,075</dd><dt>square metres of campus</dt></div><div><dd>35</dd><dt>classrooms of 46 sqm</dt></div><div><dd>6</dd><dt>labs, including computers</dt></div><div><dd>27</dd><dt>teachers</dt></div></dl><p>As declared in our <a href="/mandatory-disclosure/">mandatory public disclosure</a>.</p></section>
+  <section class="tint"><div class="wrap fac">{groups.map(([t, l]) => <div><h3>{t}</h3><ul>{l.map(x => <li>{x}</li>)}</ul></div>)}</div></section>
+  <section class="wrap duo" id="transport"><Image src={img('school-bus')} alt="Students in front of the RIET school bus and van" widths={[480,900]} sizes="(max-width:800px) 92vw, 46vw" class="round" /><div><h2>The yellow bus</h2><p class="lead">RIET buses and vans carry students to school and out on study tours.</p><p>Message us your location and we will tell you about routes near you.</p><a class="btn" href="https://wa.me/917377779000?text=Hello%20RIET%2C%20does%20the%20school%20bus%20cover%20my%20area%3F%20I%20live%20in%20">Check my area</a></div></section>
+  <section class="wrap duo"><div><h2>On the podium</h2><p class="lead">Annual Sports brings out the team player in everyone.</p><p>A march past, medals and the whole school cheering.</p><a class="more" href="/gallery/">More from the year</a></div><Image src={img('sports-podium')} alt="Winners on the podium at Annual Sports" widths={[480,900]} sizes="(max-width:800px) 92vw, 46vw" class="round" /></section>
+  <Close />
+</Base>

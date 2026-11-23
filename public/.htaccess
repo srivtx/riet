@@ -1,0 +1,9 @@
+# Keep old links and Google results working on Hostinger
+Redirect 301 /about.html /about/
+Redirect 301 /MissionVision.html /about/
+Redirect 301 /Infrastructure.html /campus-life/
+Redirect 301 /gallery.php /gallery/
+Redirect 301 /Contact.html /contact/
+Redirect 301 /contact.html /contact/
+Redirect 301 /mandatory-disclosure.php /mandatory-disclosure/
+ErrorDocument 404 /404.html

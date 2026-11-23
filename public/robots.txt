@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://rietinternationalschool.com/sitemap-index.xml
