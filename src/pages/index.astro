@@ -2,9 +2,12 @@
 import Base from '../layouts/Base.astro';
 import Sun from '../components/Sun.astro';
 import Ask from '../components/Ask.astro';
+import Films from '../components/Films.astro';
+import Near from '../components/Near.astro';
+import ClassFinder from '../components/ClassFinder.astro';
 import Close from '../components/Close.astro';
 import { Image, getImage } from 'astro:assets';
-import { img, campuses, videos, wa } from '../site';
+import { img, wa } from '../site';
 const hero = await getImage({ src: img('assembly-cheer'), width: 1440, format: 'webp' });
 const year = [
   ['Foundation Day', 'foundation-day', 'In January 2026 the school turned sixteen, and celebrated the way every birthday should be: with cake.'],
@@ -24,6 +27,7 @@ const asks = [
 ];
 ---
 <Base title="RIET International School | Bhubaneswar and Jajpur Road" description="Day school, day boarding and boarding from Pre-Nursery to Class 12 in Bhubaneswar and Jajpur Road, Odisha. RIET International School, inspiring children to dream since 2010.">
+  <link slot="head" rel="preload" as="image" href={hero.src} fetchpriority="high" />
   <section class="hero">
     <div class="wrap">
       <div class="hero-copy">
@@ -77,19 +81,17 @@ const asks = [
     </ol>
   </section>
 
+  <ClassFinder />
+
   <section class="culture">
     <Image src={img('sambalpuri-dance')} alt="Three young students in Sambalpuri costume on stage at the annual function" widths={[700, 1440]} sizes="100vw" />
     <div class="ikat" aria-hidden="true"></div>
     <div class="wrap"><h2>Ready for the world. Rooted in Odisha.</h2><p>Olympiads and computers on weekdays, Sambalpuri steps on stage. Our students grow up at ease with both.</p><a class="more" href="/gallery/">See the gallery</a></div>
   </section>
 
-  <section class="wrap videos"><h2>Hear it from the people here</h2>
-    <div>{videos.map(v => <a href={`https://www.youtube.com/watch?v=${v.id}`}><Image src={img(v.img)} alt="" widths={[420, 800]} sizes="(max-width:800px) 92vw, 33vw" /><b>{v.title}</b><span>Watch on YouTube, {v.time}</span></a>)}</div>
-  </section>
+  <Films />
 
-  <section class="wrap near"><h2>Three campuses, one family</h2>
-    <div>{campuses.map(c => <a href={c.map}><b>{c.name}</b><i>{c.city}</i><span>{c.lines}</span><em>{c.note}</em><u>Directions</u></a>)}</div>
-  </section>
+  <Near title="Three campuses, one family" />
   <Close />
 </Base>
 <script>
@@ -98,8 +100,13 @@ const asks = [
   const go = (i: number, focus = false) => {
     tabs.forEach((t, n) => { t.setAttribute('aria-selected', String(n === i)); t.tabIndex = n === i ? 0 : -1; });
     rays.forEach((r, n) => r.classList.toggle('on', n === i)); pics.forEach((p, n) => p.classList.toggle('on', n === i));
-    txt.textContent = tabs[i].dataset.d!; if (focus) tabs[i].focus();
+    txt.textContent = tabs[i].dataset.d!; if (focus) tabs[i].focus({ preventScroll: true }); const bar = tabs[0].parentElement!; bar.scrollTo({ left: tabs[i].offsetLeft - bar.offsetLeft - bar.clientWidth / 2 + tabs[i].offsetWidth / 2, behavior: 'smooth' });
   };
   tabs.forEach((t, i) => { t.onclick = () => go(i); t.onkeydown = e => { const k = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (k) go((i + k + tabs.length) % tabs.length, true); }; });
   rays.forEach((r, i) => r.addEventListener('click', () => go(i))); go(6);
+  // Hovering a name lights its ray, and swiping the sun turns the year
+  tabs.forEach((t, i) => { t.onpointerenter = () => rays[i].classList.add('hint'); t.onpointerleave = () => rays[i].classList.remove('hint'); });
+  const sun = root.querySelector<HTMLElement>('.dial-sun')!; let x0 = 0;
+  sun.addEventListener('touchstart', e => x0 = e.touches[0].clientX, { passive: true });
+  sun.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 45) { const i = tabs.findIndex(t => t.tabIndex === 0); go((i + (dx < 0 ? 1 : -1) + tabs.length) % tabs.length); } });
 </script>

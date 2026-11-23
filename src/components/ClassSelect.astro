@@ -1,0 +1,9 @@
+---
+import { stages } from '../site';
+interface Props { value?: string; required?: boolean; blank?: string }
+const { value, required, blank } = Astro.props;
+---
+<select name="grade" data-pick="classes" aria-label="Class" data-label="Class" required={required}>
+  {blank && <option value="">{blank}</option>}
+  {stages.map(s => <optgroup label={s.name}>{s.classes.map(c => <option selected={c === value}>{c}</option>)}</optgroup>)}
+</select>

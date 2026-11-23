@@ -22,3 +22,16 @@ SAI: pale, serif, posed studio children, brochure form. ODM: group portal of log
 - CBSE affiliation 1530488 is for Thakurpatna only (the letter says so). Never state it for other campuses.
 - Numbers come from the mandatory disclosure, not the old counters.
 - No invented results, rankings, testimonials or timings.
+
+## Round two: trust, the Odisha way
+| What we know or believe | What we built |
+|---|---|
+| Middle-class parents lean on the "grapevine" ([Lucknow study](https://link.springer.com/article/10.1007/s44217-025-00617-0)) | "Send to family", and a checklist made to be forwarded |
+| Parents often find the school differs from what they believed ([Azim Premji Foundation](https://www.ideasforindia.in/topics/social-identity/school-choice-in-rural-india-perception-versus-reality.html)) | "Eight questions to ask any school. Including us." A school that hands over the yardstick looks like one with nothing to hide |
+| Odisha sets Class 1 at age 6+ by 1 September ([notice coverage](https://odishabytes.com/minimum-age-for-class-i-admissions-fixed-at-6-years-in-odisha)) | Class finder: two wheels, one ray per class |
+| Our judgement: sharing a phone number feels risky | A live preview of the exact message before it is sent |
+| Our judgement: elders at home may prefer Odia | One-tap Odia WhatsApp message |
+| Our judgement: distance decides shortlists | "Which is nearest to me?" The location stays on the phone |
+| Our judgement: parents research late at night | The sky follows Bhubaneswar time, and the site says when the office opens |
+
+Pinterest round two (kept): grouped colour-coded dropdowns, scroll wheels, bottom sheets on phones, chips that show state by fill. Rejected: trust badges and counters with no source.

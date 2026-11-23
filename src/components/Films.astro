@@ -1,0 +1,7 @@
+---
+import { Image } from 'astro:assets'; import { videos, img } from '../site';
+---
+<section class="wrap videos"><h2>Hear it from the people here</h2>
+  <div>{videos.map(v => <a href={`https://www.youtube.com/watch?v=${v.id}`} data-film={v.id} data-title={v.title}><span class="thumb"><Image src={img(v.img)} alt="" widths={[420, 800]} sizes="(max-width:800px) 92vw, 33vw" /><i aria-hidden="true"></i></span><b>{v.title}</b><span>Watch, {v.time}</span></a>)}</div>
+  <dialog class="film"><div class="frame"></div><p><a>Open on YouTube</a><button autofocus>Close</button></p></dialog>
+</section>

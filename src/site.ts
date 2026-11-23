@@ -23,12 +23,20 @@ export const social = [
 ];
 
 export const campuses = [
-  { name: 'VSS Nagar', city: 'Bhubaneswar', lines: 'RIET House, 4755, VSS Nagar, Bhubaneswar, Odisha 751010', map: 'https://maps.app.goo.gl/me1RKzKjYSAEUbFv5', note: 'Main campus' },
-  { name: 'Thakurpatna', city: 'Jajpur Road', lines: 'RIET House, Thakurpatna, Sankhachilla, Jajpur Road', map: 'https://maps.app.goo.gl/N9Rk5Jcb99VPcsqn6', note: 'CBSE affiliated, No. 1530488' },
-  { name: 'Ganesh Bazar', city: 'Byasanagar', lines: 'Ganesh Bazar, near Government Hospital, Byasanagar, Jajpur Road', map: 'https://maps.app.goo.gl/krBs2XniQfJykqJx9', note: 'In the heart of town' },
+  { name: 'VSS Nagar', city: 'Bhubaneswar', lines: 'RIET House, 4755, VSS Nagar, Bhubaneswar, Odisha 751010', map: 'https://maps.app.goo.gl/me1RKzKjYSAEUbFv5', note: 'Main campus', lat: 20.31455, lng: 85.84624 },
+  { name: 'Thakurpatna', city: 'Jajpur Road', lines: 'RIET House, Thakurpatna, Sankhachilla, Jajpur Road', map: 'https://maps.app.goo.gl/N9Rk5Jcb99VPcsqn6', note: 'CBSE affiliated, No. 1530488', lat: 20.91219, lng: 86.15114 },
+  { name: 'Ganesh Bazar', city: 'Byasanagar', lines: 'Ganesh Bazar, near Government Hospital, Byasanagar, Jajpur Road', map: 'https://maps.app.goo.gl/krBs2XniQfJykqJx9', note: 'In the heart of town', lat: 20.9382, lng: 86.12943 },
 ];
 
-export const classes = ['Pre-Nursery', 'Nursery', 'LKG', 'UKG', ...Array.from({ length: 12 }, (_, i) => `Class ${i + 1}`)];
+const range = (a: number, b: number) => Array.from({ length: b - a + 1 }, (_, i) => `Class ${a + i}`);
+export const stages = [
+  { name: 'Early years', classes: ['Pre-Nursery', 'Nursery', 'LKG', 'UKG'] },
+  { name: 'Primary', classes: range(1, 5) },
+  { name: 'Middle', classes: range(6, 8) },
+  { name: 'Senior', classes: range(9, 12) },
+];
+export const classes = stages.flatMap(s => s.classes);
+export const family = 'Let us look at this school together: RIET International School, Bhubaneswar and Jajpur Road. https://rietinternationalschool.com';
 export const videos = [
   { id: 'YRY0DbYCtjw', img: 'video-principal', title: 'A message from the Principal, Bhubaneswar', time: '1:24' },
   { id: 'H5uNLLPDShY', img: 'video-teachers', title: 'Teachers on life at RIET', time: '1:37' },

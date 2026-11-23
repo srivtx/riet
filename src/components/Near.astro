@@ -1,0 +1,7 @@
+---
+import { campuses } from '../site';
+const { title } = Astro.props;
+---
+<section class="wrap near"><div class="near-head">{title && <h2>{title}</h2>}<p><button class="btn line" data-near>Which is nearest to me?</button><output></output></p></div>
+  <div class="near-grid">{campuses.map(c => <a href={c.map} data-lat={c.lat} data-lng={c.lng} data-name={c.name}><b>{c.name}</b><i>{c.city}</i><span>{c.lines}</span><em>{c.note}</em><u>Directions</u></a>)}</div>
+</section>

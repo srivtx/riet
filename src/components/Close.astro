@@ -1,10 +1,14 @@
 ---
 import Ask from './Ask.astro';
-import { tel, phone } from '../site';
+import { tel, phone, wa, family } from '../site';
 ---
 <section class="close"><div class="wrap">
   <h2>Come and see it for yourself.</h2>
   <p class="lead">Walk through a classroom, meet a teacher, ask about fees and transport. Tell us one line about your child and we will take it from there.</p>
   <Ask />
-  <p>Prefer to talk? <a href={tel}>Call {phone}</a></p>
+  <div class="close-more">
+    <p><a href={tel}>Call {phone}</a><br /><span data-open>Monday to Saturday, 9:00 am to 5:00 pm</span></p>
+    <p lang="or"><a href={wa('ନମସ୍କାର, ମୁଁ ମୋ ପିଲାର ଆଡମିଶନ ବିଷୟରେ ଜାଣିବାକୁ ଚାହୁଁଛି।')}>ଓଡ଼ିଆରେ ଲେଖନ୍ତୁ</a><br /><span lang="en">Write to us in Odia</span></p>
+    <p><a data-share={family} href={`https://wa.me/?text=${encodeURIComponent(family)}`}>Send to family</a><br /><span>So everyone at home can decide together</span></p>
+  </div>
 </div></section>

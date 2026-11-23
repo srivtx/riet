@@ -1,0 +1,59 @@
+---
+// Two wheels and a sun with one ray per class. Odisha: Class 1 means age 6 by 1 September.
+import { stages } from '../site';
+const all = stages.flatMap((s, i) => s.classes.map(c => ({ c, i })));
+const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const ang = (i: number) => -172 + i * (164 / (all.length - 1));
+---
+<section class="finder" data-finder aria-labelledby="fh">
+  <div class="wrap">
+    <div class="finder-copy">
+      <h2 id="fh">Which class will my child be in?</h2>
+      <p>Set the month and year your child was born.</p>
+      <div class="wheels">
+        <div class="wheel" role="spinbutton" tabindex="0" aria-label="Birth month" data-wheel="m"><ul>{months.map(m => <li>{m}</li>)}</ul></div>
+        <div class="wheel" role="spinbutton" tabindex="0" aria-label="Birth year" data-wheel="y"><ul></ul></div>
+      </div>
+      <p class="small">A guide based on <a href="https://odishabytes.com/minimum-age-for-class-i-admissions-fixed-at-6-years-in-odisha">Odisha’s rule</a> of age six by 1 September for Class 1. Our admissions team confirms the final class.</p>
+    </div>
+    <div class="finder-sun">
+      <svg viewBox="0 0 1000 540" aria-hidden="true">
+        {all.map((a, i) => <polygon class={`fray s${a.i}`} points="330,-11 400,-19 505,0 400,19 330,11" transform={`translate(500 520) rotate(${ang(i).toFixed(1)})`} />)}
+        <path class="ring" d="M150 520A350 350 0 0 1 850 520Z" /><path fill="#fff" d="M182 520A318 318 0 0 1 818 520Z" />
+      </svg>
+      <div class="finder-out" aria-live="polite"><b></b><span></span><a class="btn" target="_blank" rel="noopener">Ask about this class</a></div>
+    </div>
+  </div>
+</section>
+<script>
+  import { wa, classes } from '../site';
+  const root = document.querySelector<HTMLElement>('[data-finder]');
+  if (root) {
+    const now = new Date(), session = now.getMonth() >= 8 ? now.getFullYear() + 1 : now.getFullYear();
+    const years = Array.from({ length: 18 }, (_, i) => session - 1 - i);
+    const [M, Y] = ['m', 'y'].map(k => root.querySelector<HTMLElement>(`[data-wheel=${k}]`)!);
+    Y.querySelector('ul')!.innerHTML = years.map(y => `<li>${y}</li>`).join('');
+    const v = { m: 4, y: 6 }, rays = [...root.querySelectorAll('.fray')];
+    const [big, sub, link] = ['b', 'span', 'a'].map(s => root.querySelector<HTMLElement>(`.finder-out ${s}`)!);
+    const H = () => Y.querySelector('li')!.offsetHeight;
+    const draw = () => {
+      ([[M, v.m], [Y, v.y]] as const).forEach(([w, i]) => { const li = [...w.querySelectorAll('li')]; li.forEach((l, k) => l.classList.toggle('on', k === i)); w.setAttribute('aria-valuetext', li[i].textContent!); w.setAttribute('aria-valuenow', String(i + 1)); w.setAttribute('aria-valuemin', '1'); w.setAttribute('aria-valuemax', String(li.length)); });
+      // Age completed on 1 September of the session year. Born in September or later has not had the birthday yet.
+      const age = session - years[v.y] - (v.m >= 8 ? 1 : 0), idx = age - 2, c = classes[idx];
+      rays.forEach((r, i) => { r.classList.toggle('on', i === idx); r.classList.toggle('past', i < idx); });
+      big.textContent = c ?? (idx < 0 ? 'A little early' : 'All grown up');
+      sub.textContent = c ? `for the ${session}–${String(session + 1).slice(2)} session` : idx < 0 ? 'Come and visit anyway. We love meeting future students.' : 'Our classes go up to Class 12.';
+      link.hidden = !c; if (c) (link as HTMLAnchorElement).href = wa(`Hello RIET. My child may join ${c} in ${session}–${String(session + 1).slice(2)}. Please guide us about admission.`);
+    };
+    const go = (w: HTMLElement, i: number, smooth = true) => w.scrollTo({ top: i * H(), behavior: smooth && !matchMedia('(prefers-reduced-motion:reduce)').matches ? 'smooth' : 'instant' });
+    ([[M, 'm'], [Y, 'y']] as const).forEach(([w, k]) => {
+      const max = w.querySelectorAll('li').length - 1; let raf = 0;
+      const to = (i: number) => { v[k] = Math.max(0, Math.min(max, i)); draw(); go(w, v[k]); };
+      w.addEventListener('scroll', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { const i = Math.max(0, Math.min(max, Math.round(w.scrollTop / H()))); if (i !== v[k]) { v[k] = i; draw(); } }); });
+      w.onkeydown = e => { const d = { ArrowDown: 1, ArrowUp: -1, PageDown: 3, PageUp: -3 }[e.key as 'ArrowDown']; if (d) { e.preventDefault(); to(v[k] + d); } else if (e.key === 'Home' || e.key === 'End') { e.preventDefault(); to(e.key === 'Home' ? 0 : max); } };
+      w.querySelectorAll('li').forEach((l, i) => l.onclick = () => to(i));
+      go(w, v[k], false);
+    });
+    draw(); document.fonts.ready.then(() => { go(M, v.m, false); go(Y, v.y, false); });
+  }
+</script>

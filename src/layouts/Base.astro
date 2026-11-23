@@ -22,6 +22,8 @@ const ld = { '@context': 'https://schema.org', '@type': 'School', name: 'RIET In
   <meta name="theme-color" content="#d9241b" />
   <meta property="og:title" content={title} /><meta property="og:description" content={description} />
   <meta property="og:image" content={new URL('/og.jpg', Astro.site)} /><meta property="og:url" content={url} /><meta name="twitter:card" content="summary_large_image" />
+  <script is:inline>(()=>{const h=new Date(Date.now()+198e5).getUTCHours();document.documentElement.dataset.sky=h<5||h>=19?'night':h<7?'dawn':h<17?'day':'dusk';document.documentElement.classList.add('js')})()</script>
+  <slot name="head" />
   <script type="application/ld+json" set:html={JSON.stringify(ld)} is:inline />
 </head>
 <body>
@@ -41,23 +43,13 @@ const ld = { '@context': 'https://schema.org', '@type': 'School', name: 'RIET In
       <div class="foot-brand"><span class="disc"><Image src={img('logo')} alt="RIET International School" width={180} /></span>
         <p lang="or" class="or">ସ୍ୱପ୍ନ ଦେଖିବାର ପ୍ରେରଣା</p><p>Inspires to Dream, since 2010.<br />Part of RIET Group of Institutions.</p></div>
       <div><h3>Campuses</h3>{campuses.map(c => <p><b>{c.name}</b><br />{c.lines}<br /><a href={c.map}>Directions</a></p>)}</div>
-      <div><h3>Talk to us</h3><p><a href={tel}>{phone}</a><br /><a href={`mailto:${email}`}>{email}</a><br />{hours}</p>
+      <div><h3>Talk to us</h3><p><a href={tel}>{phone}</a><br /><a href={`mailto:${email}`}>{email}</a><br />{hours}<br /><span data-open></span></p>
         <p>{social.map(([t, h]) => <><a href={h}>{t}</a><br /></>)}</p></div>
       <div><h3>The school</h3><p>{nav.map(([t, h]) => <><a href={h}>{t}</a><br /></>)}<a href="/mandatory-disclosure/">Mandatory public disclosure</a></p></div>
       <p class="legal">© {new Date().getFullYear()} RIET International School. All rights reserved.</p>
     </div>
   </footer>
   <div class="bar"><a href={tel}>Call</a><a class="w" href={wa()}>WhatsApp</a><a href="/contact/">Find us</a></div>
-  <script>
-    import { wa } from '../site';
-    const b = document.querySelector<HTMLButtonElement>('.burger')!;
-    const set = (o: boolean) => { b.setAttribute('aria-expanded', String(o)); document.body.classList.toggle('open', o); b.textContent = o ? 'Close' : 'Menu'; };
-    b.onclick = () => set(b.getAttribute('aria-expanded') !== 'true');
-    addEventListener('keydown', e => e.key === 'Escape' && set(false));
-    document.querySelectorAll<HTMLFormElement>('[data-ask]').forEach(f => f.addEventListener('submit', e => {
-      e.preventDefault(); const d = new FormData(f);
-      window.open(wa(`Hello RIET. My child is joining ${d.get('grade')} and we live near ${d.get('campus')}. We would like ${d.get('mode')}. Please share admission details.`), '_blank', 'noopener');
-    }));
-  </script>
+  <script>import '../scripts/site';</script>
 </body>
 </html>

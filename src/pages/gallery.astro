@@ -8,15 +8,23 @@ const cats = ['All','Culture','Sports','Trips','Learning','Campus'];
 <Base title="Gallery | RIET International School" description="Photos from festivals, sports, study tours and classrooms at RIET International School.">
   <Head title="This is what school feels like." lead="Real days, real students, no stock photos." />
   <section class="wrap gal">
-    <div class="chips" role="group" aria-label="Filter photos">{cats.map((c, i) => <button aria-pressed={i === 0 ? 'true' : 'false'} data-c={c}>{c}</button>)}</div>
+    <div class="chips" role="group" aria-label="Filter photos">{cats.map((c, i) => <button aria-pressed={i === 0 ? 'true' : 'false'} data-c={c}>{c} <small>{c === 'All' ? items.length : items.filter(i => i[2] === c).length}</small></button>)}</div>
     <div class="grid">{items.map(([i, t, c], n) => <button data-cat={c} data-full={full[n]} data-t={t}><Image src={img(i)} alt={t} widths={[420, 800]} sizes="(max-width:700px) 92vw, 33vw" /><span>{t}</span></button>)}</div>
   </section>
-  <dialog class="box"><img alt="" /><p></p><button autofocus>Close</button></dialog>
+  <dialog class="box"><img alt="" /><p></p><div><button data-go="-1">Previous</button><button data-go="1" autofocus>Next</button><button data-go="0">Close</button></div></dialog>
 </Base>
 <script>
   const g = [...document.querySelectorAll<HTMLButtonElement>('.grid button')], chips = [...document.querySelectorAll<HTMLButtonElement>('.chips button')];
-  chips.forEach(b => b.onclick = () => { chips.forEach(x => x.setAttribute('aria-pressed', String(x === b))); g.forEach(x => x.hidden = b.dataset.c !== 'All' && x.dataset.cat !== b.dataset.c); });
-  const d = document.querySelector('dialog')!;
-  g.forEach(b => b.onclick = () => { const i = d.querySelector('img')!; i.src = b.dataset.full!; i.alt = b.dataset.t!; d.querySelector('p')!.textContent = b.dataset.t!; d.showModal(); });
-  d.onclick = e => { if (e.target === d || (e.target as Element).tagName === 'BUTTON') d.close(); };
+  chips.forEach(b => b.onclick = () => {
+    const run = () => { chips.forEach(x => x.setAttribute('aria-pressed', String(x === b))); g.forEach(x => x.hidden = b.dataset.c !== 'All' && x.dataset.cat !== b.dataset.c); };
+    document.startViewTransition ? document.startViewTransition(run) : run();
+  });
+  const d = document.querySelector<HTMLDialogElement>('dialog.box')!, im = d.querySelector('img')!; let at = 0;
+  const list = () => g.filter(x => !x.hidden);
+  const show = (i: number) => { const l = list(); at = (i + l.length) % l.length; const b = l[at]; im.src = b.dataset.full!; im.alt = b.dataset.t!; d.querySelector('p')!.textContent = `${b.dataset.t}, ${at + 1} of ${l.length}`; };
+  g.forEach(b => b.onclick = () => { show(list().indexOf(b)); d.showModal(); });
+  d.onclick = e => { const go = (e.target as HTMLElement).dataset?.go; if (e.target === d || go === '0') d.close(); else if (go) show(at + +go); };
+  d.onkeydown = e => { if (e.key === 'ArrowRight') show(at + 1); if (e.key === 'ArrowLeft') show(at - 1); };
+  let x0 = 0; im.addEventListener('touchstart', e => x0 = e.touches[0].clientX, { passive: true });
+  im.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) show(at + (dx < 0 ? 1 : -1)); });
 </script>

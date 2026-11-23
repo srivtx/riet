@@ -1,0 +1,4 @@
+---
+import { campuses } from '../site';
+---
+<select name="campus" data-pick="cards" aria-label="Campus" data-label="Campus">{campuses.map(c => <option data-note={c.lines}>{`${c.name}, ${c.city}`}</option>)}</select>

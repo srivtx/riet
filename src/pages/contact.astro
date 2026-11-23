@@ -1,10 +1,10 @@
 ---
 import Base from '../layouts/Base.astro'; import Head from '../components/Head.astro'; import Close from '../components/Close.astro';
-import { campuses, tel, phone, email, hours, wa } from '../site';
+import Near from '../components/Near.astro'; import { tel, phone, email, hours, wa } from '../site';
 ---
 <Base title="Contact and campuses | RIET International School" description="Phone, WhatsApp, email and directions for RIET campuses in VSS Nagar Bhubaneswar, Thakurpatna and Ganesh Bazar, Jajpur Road.">
   <Head title="We are closer than you think." lead={`Call ${phone}, ${hours}.`} />
-  <section class="wrap reach"><a class="btn" href={tel}>Call {phone}</a><a class="btn line" href={wa()}>WhatsApp us</a><a class="btn line" href={`mailto:${email}`}>Email us</a></section>
-  <section class="wrap near"><div>{campuses.map(c => <a href={c.map}><b>{c.name}</b><i>{c.city}</i><span>{c.lines}</span><em>{c.note}</em><u>Directions</u></a>)}</div></section>
+  <section class="wrap reach"><a class="btn" href={tel}>Call {phone}</a><a class="btn line" href={wa()}>WhatsApp us</a><a class="btn line" href={`mailto:${email}`}>Email us</a><p data-open></p></section>
+  <Near />
   <Close />
 </Base>

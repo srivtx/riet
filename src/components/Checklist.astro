@@ -1,0 +1,8 @@
+---
+const qs = ['Is the board affiliation for this very campus? Can I read the letter?','Who will teach my child’s class, and what have they studied?','How many children share one section?','May I see the toilets, drinking water and dining area today?','Who travels on the bus, and whom do I call when it is late?','What is the full cost for the year, with books, uniform and transport?','How will you tell me if my child is struggling or unhappy?','How did my child feel walking out?'];
+const text = 'Eight questions to ask any school:\n\n' + qs.map((q, i) => `${i + 1}. ${q}`).join('\n') + '\n\nhttps://rietinternationalschool.com/admissions/#checklist';
+---
+<section class="check" id="checklist"><div class="wrap">
+  <div><h2>Eight questions to ask any school. Including us.</h2><p>Choosing a school is a family decision. Take this list along on every visit, and choose the school that answers well.</p><a class="btn" data-share={text} href={`https://wa.me/?text=${encodeURIComponent(text)}`}>Send the list to family</a></div>
+  <ul>{qs.map(q => <li><label><input type="checkbox" /><span>{q}</span></label></li>)}</ul>
+</div></section>
