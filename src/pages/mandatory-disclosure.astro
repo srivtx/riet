@@ -1,4 +1,5 @@
 ---
+import Pic from '../components/Pic.astro';
 import Base from '../layouts/Base.astro'; import Head from '../components/Head.astro';
 // Add a PDF to public/documents and put its path as the second value to publish it.
 const A = [['Name of the school','RIET International School'],['Affiliation No.','1530488'],['School code','16441'],['Complete address with PIN code','At-Thakurpatna, Po-Korei, Ps-Panikoili, Dist.-Jajpur, Odisha, 755015'],['Principal’s name and qualifications','Dr. Subash Chandra Sahoo (M.A., B.Ed.)'],['School email ID','hello@rietinternationalschool.com'],['Contact details','+91 73777 79000']];
@@ -8,12 +9,14 @@ const D = [['Principal','01'],['Total teachers','27'],['PGT','06'],['TGT','06'],
 const E = [['Total campus area','6075 sqm'],['Number and size of classrooms','35 and 46 sqm'],['Number and size of laboratories including computer lab','6 and 56 sqm'],['Internet facility','Yes'],['Girls toilets','10'],['Boys toilets','10']];
 ---
 <Base title="Mandatory public disclosure | RIET International School" description="Statutory information of RIET International School as per CBSE Affiliation Bye-Laws.">
-  <Head title="Mandatory public disclosure" lead="Statutory information as per CBSE Affiliation Bye-Laws, for the Thakurpatna campus." />
+  <Head sky="city" title="Mandatory public disclosure" lead="Statutory information as per CBSE Affiliation Bye-Laws, for the Thakurpatna campus." />
   <div class="wrap disc-page">
-    <section><h2>A. General information</h2><table><tbody>{A.map(([k,v]) => <tr><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody></table></section>
-    <section><h2>B. Documents and information</h2><table><tbody>{B.map(([k,v]) => <tr><th scope="row">{k}</th><td>{v ? <a href={v}>View document</a> : 'Not available at the moment'}</td></tr>)}</tbody></table></section>
-    <section><h2>C. Results and academics</h2><table><tbody>{C.map(([k,v]) => <tr><th scope="row">{k}</th><td>{v ? <a href={v}>View document</a> : 'Not available at the moment'}</td></tr>)}<tr><th scope="row">Result, Class X</th><td>N/A</td></tr><tr><th scope="row">Result, Class VIII</th><td>N/A</td></tr></tbody></table></section>
-    <section><h2>D. Teaching staff</h2><table><tbody>{D.map(([k,v]) => <tr><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody></table></section>
-    <section><h2>E. School infrastructure</h2><table><tbody>{E.map(([k,v]) => <tr><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody></table></section>
+    <div class="disc-top"><Pic name="art-certificate" alt="" sizes="200px" max={460} /><dl><div><dt>CBSE affiliation</dt><dd>1530488</dd></div><div><dt>School code</dt><dd>16441</dd></div><div><dt>Valid</dt><dd>2026 to 2031</dd></div><div><dt>Classes</dt><dd>1 to 12</dd></div></dl></div>
+    <nav class="disc-nav" aria-label="Sections"><a href="#a">General</a><a href="#b">Documents</a><a href="#c">Results</a><a href="#d">Staff</a><a href="#e">Infrastructure</a></nav>
+    <section id="a"><h2>A. General information</h2><table><tbody>{A.map(([k,v]) => <tr><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody></table></section>
+    <section id="b"><h2>B. Documents and information</h2><table><tbody>{B.map(([k,v]) => <tr><th scope="row">{k}</th><td>{v ? <a href={v}>View document</a> : 'Not available at the moment'}</td></tr>)}</tbody></table></section>
+    <section id="c"><h2>C. Results and academics</h2><table><tbody>{C.map(([k,v]) => <tr><th scope="row">{k}</th><td>{v ? <a href={v}>View document</a> : 'Not available at the moment'}</td></tr>)}<tr><th scope="row">Result, Class X</th><td>N/A</td></tr><tr><th scope="row">Result, Class VIII</th><td>N/A</td></tr></tbody></table></section>
+    <section id="d"><h2>D. Teaching staff</h2><table><tbody>{D.map(([k,v]) => <tr><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody></table></section>
+    <section id="e"><h2>E. School infrastructure</h2><table><tbody>{E.map(([k,v]) => <tr><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody></table></section>
   </div>
 </Base>

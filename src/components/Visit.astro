@@ -1,0 +1,26 @@
+---
+// People keep plans that have a day and a time. Both are chosen here; the school confirms on WhatsApp.
+import CampusSelect from './CampusSelect.astro';
+---
+<section class="visit" id="visit"><div class="wrap">
+  <div><h2>Choose a day. Come and see.</h2><p class="lead">Pick a day and a time that suits your family. We will confirm it on WhatsApp.</p></div>
+  <form data-visit>
+    <fieldset><legend>Day</legend><div class="days"></div></fieldset>
+    <fieldset><legend>Time</legend><div class="times">{['10 am', '12 noon', '3 pm'].map((t, i) => <label><input type="radio" name="time" value={t} checked={i === 0} /><span>{t}</span></label>)}</div></fieldset>
+    <fieldset class="vc"><legend>Campus</legend><div class="form"><CampusSelect /></div></fieldset>
+    <p class="plan" aria-live="polite"></p>
+    <p class="acts"><button class="btn" type="submit">Request this visit</button><a class="more" target="_blank" rel="noopener" data-cal>Save to my calendar</a></p>
+  </form>
+</div></section>
+<script>
+  import { wa } from '../site'; import { sent } from '../scripts/sent';
+  const f = document.querySelector<HTMLFormElement>('[data-visit]')!, box = f.querySelector('.days')!, plan = f.querySelector('.plan')!, cal = f.querySelector<HTMLAnchorElement>('[data-cal]')!;
+  const days: Date[] = []; for (const d = new Date(); days.length < 8;) { d.setDate(d.getDate() + 1); if (d.getDay()) days.push(new Date(d)); }
+  box.innerHTML = days.map((d, i) => `<label><input type="radio" name="day" value="${i}"${i ? '' : ' checked'}><span><i>${d.toLocaleDateString('en-IN', { weekday: 'short' })}</i><b>${d.getDate()}</b><i>${d.toLocaleDateString('en-IN', { month: 'short' })}</i></span></label>`).join('');
+  const read = () => { const v = new FormData(f), d = days[+v.get('day')!]; return { d, time: String(v.get('time')), campus: String(v.get('campus')), long: d.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' }) }; };
+  const draw = () => { const { d, time, campus, long } = read(); plan.textContent = `${long}, ${time}, at ${campus}.`;
+    const h = { '10 am': 10, '12 noon': 12, '3 pm': 15 }[time]!, z = (n: number) => String(n).padStart(2, '0'), day = `${d.getFullYear()}${z(d.getMonth() + 1)}${z(d.getDate())}`;
+    cal.href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Visit RIET International School (to be confirmed)')}&dates=${day}T${z(h)}0000/${day}T${z(h + 1)}0000&ctz=Asia/Kolkata&location=${encodeURIComponent('RIET International School, ' + campus)}`; };
+  f.addEventListener('input', draw); draw();
+  f.addEventListener('submit', e => { e.preventDefault(); const { time, campus, long } = read(); window.open(wa(`Hello RIET. We would like to visit the ${campus} campus on ${long} at ${time}. Please confirm.`), '_blank', 'noopener'); sent(); });
+</script>

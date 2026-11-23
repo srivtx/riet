@@ -1,8 +1,9 @@
 ---
+import Pic from '../components/Pic.astro';
 import Base from '../layouts/Base.astro'; import Head from '../components/Head.astro';
-import ClassSelect from '../components/ClassSelect.astro'; import CampusSelect from '../components/CampusSelect.astro'; import ClassFinder from '../components/ClassFinder.astro'; import Checklist from '../components/Checklist.astro';
+import Visit from '../components/Visit.astro'; import ClassSelect from '../components/ClassSelect.astro'; import CampusSelect from '../components/CampusSelect.astro'; import ClassFinder from '../components/ClassFinder.astro'; import Checklist from '../components/Checklist.astro';
 import { img, tel, phone, email, hours } from '../site';
-const steps = [['Say hello','Send the enquiry below or call. Our admissions team aims to contact you within 24 hours.'],['Visit','Walk the campus, meet teachers and bring your child along.'],['Decide together','We guide you through class placement, fees, transport and boarding.'],['Join','Complete the paperwork and come in for day one.']];
+const steps = [['Say hello','Send the enquiry below or call. Our admissions team aims to contact you within 24 hours.','art-phone'],['Visit','Walk the campus, meet teachers and bring your child along.','art-gate'],['Decide together','We guide you through class placement, fees, transport and boarding.','art-chai'],['Join','Complete the paperwork and come in for day one.','art-bag']];
 const faq = [
   ['Is RIET affiliated to CBSE?','The Thakurpatna campus at Jajpur Road holds CBSE affiliation No. 1530488 for Classes 1 to 12, from 1 April 2026 to 31 March 2031. For the other campuses, please ask us about the board and class availability.'],
   ['When will the first CBSE board batch appear?','According to the affiliation letter, the first Class 10 and 12 batches will appear in 2028.'],
@@ -13,10 +14,11 @@ const faq = [
 ---
 <Base title="Admissions | RIET International School" description="How to join RIET International School, Pre-Nursery to Class 12. Enquire on WhatsApp, plan a visit and get the fee structure.">
   <Head sky="road" flip title="Four steps to the first day of school." lead="No long forms. No pressure. Just a conversation about your child." img="school-bus" alt="Students smiling in front of the RIET bus" />
-  <section class="wrap steps"><ol>{steps.map(([a,b]) => <li><b>{a}</b><span>{b}</span></li>)}</ol></section>
+  <section class="wrap path"><ol>{steps.map(([a,b,c]) => <li><Pic name={c} alt="" sizes="(max-width:800px) 34vw, 200px" max={500} /><b>{a}</b><span>{b}</span></li>)}</ol></section>
+  <Visit />
   <ClassFinder />
   <section class="tint" id="enquire"><div class="wrap duo">
-    <div><h2>Enquire now</h2><p class="lead">Fill this in and WhatsApp opens with your message ready to send. Nothing is stored on this website.</p><p><a href={tel}>{phone}</a><br /><a href={`mailto:${email}`}>{email}</a><br />{hours}</p></div>
+    <div><h2>Enquire now</h2><p class="lead">Fill this in and WhatsApp opens with your message ready to send. Nothing reaches us until you press send.</p><p><a href={tel}>{phone}</a><br /><a href={`mailto:${email}`}>{email}</a><br />{hours}</p></div>
     <form class="form" id="enq" novalidate>
       <label>Your name<input name="name" required autocomplete="name" /></label>
       <label>Mobile number<input name="mobile" type="tel" inputmode="numeric" pattern="[0-9]{10}" title="10 digit mobile number" required autocomplete="tel-national" /></label>
@@ -33,7 +35,7 @@ const faq = [
   <section class="wrap faq"><h2>Good questions</h2><div>{faq.map(([q,a]) => <details><summary>{q}</summary><p>{a}</p></details>)}</div></section>
 </Base>
 <script>
-  import { wa, email } from '../site';
+  import { wa, email } from '../site'; import { sent } from '../scripts/sent';
   const f = document.querySelector<HTMLFormElement>('#enq')!, box = f.querySelector('.preview div')!, oops = f.querySelector('.oops')!;
   const text = () => { const d = new FormData(f), g = (k: string) => String(d.get(k) || '').trim();
     return ['Admission enquiry', `Name: ${g('name') || '…'}`, `Mobile: ${g('mobile') || '…'}`, `Class: ${g('grade') || '…'}`, `Campus: ${g('campus')}`, `About: ${g('about')}`, g('msg') && `Message: ${g('msg')}`].filter(Boolean).join('\n'); };
@@ -51,6 +53,6 @@ const faq = [
     }
     const t = text();
     if ((e.submitter as HTMLButtonElement)?.value === 'mail') location.href = `mailto:${email}?subject=${encodeURIComponent('Admission enquiry')}&body=${encodeURIComponent(t)}`;
-    else window.open(wa(t), '_blank', 'noopener');
+    else { window.open(wa(t), '_blank', 'noopener'); sent(); }
   });
 </script>

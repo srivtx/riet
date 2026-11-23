@@ -1,6 +1,14 @@
 import { enhance } from './pick';
 import { wa } from '../site';
+import { sent } from './sent';
+// Remember a family's choices on their own device, and keep every picker on the page in step.
+const mem = (() => { try { return JSON.parse(localStorage.getItem('riet') || '{}'); } catch { return {}; } })();
+const kin = [...document.querySelectorAll<HTMLSelectElement>('select[data-pick]')].filter(s => ['grade', 'campus', 'mode'].includes(s.name));
+kin.forEach(s => { if (mem[s.name] && [...s.options].some(o => o.value === mem[s.name])) s.value = mem[s.name]; });
+
 document.querySelectorAll<HTMLSelectElement>('select[data-pick]').forEach(enhance);
+kin.forEach(s => s.addEventListener('input', () => { mem[s.name] = s.value; try { localStorage.setItem('riet', JSON.stringify(mem)); } catch {} kin.forEach(o => { if (o !== s && o.name === s.name && o.value !== s.value) { o.value = s.value; o.dispatchEvent(new Event('sync')); } }); }));
+document.querySelectorAll('[data-sent]').forEach(a => a.addEventListener('click', () => sent()));
 
 // Menu
 const b = document.querySelector<HTMLButtonElement>('.burger')!;
@@ -11,7 +19,7 @@ addEventListener('keydown', e => e.key === 'Escape' && set(false));
 // The one-sentence enquiry
 document.querySelectorAll<HTMLFormElement>('[data-ask]').forEach(f => f.addEventListener('submit', e => {
   e.preventDefault(); const d = new FormData(f);
-  window.open(wa(`Hello RIET. My child is joining ${d.get('grade')} and we live near ${d.get('campus')}. We would like ${d.get('mode')}. Please share admission details.`), '_blank', 'noopener');
+  window.open(wa(`Hello RIET. My child is joining ${d.get('grade')} and we live near ${d.get('campus')}. We would like ${d.get('mode')}. Please share admission details.`), '_blank', 'noopener'); sent();
 }));
 
 // Is the office open, in India time (Mon to Sat, 9 to 5)

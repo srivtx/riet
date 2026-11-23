@@ -1,0 +1,32 @@
+---
+// Scroll story: a mango seed grows frame by frame while the school's vision unfolds.
+import Pic from './Pic.astro';
+const steps = [
+  ['It starts with a seed','To cultivate an institution where every student discovers their potential, develops a passion for lifelong learning, and becomes a responsible global citizen equipped to make meaningful contributions to society.','Our vision'],
+  ['Then comes care','To provide a nurturing, inclusive learning environment that fosters academic excellence, character development and holistic growth through innovative teaching, a comprehensive curriculum and partnership with parents and community.','Our mission'],
+  ['Holistic excellence','Academic brilliance alongside emotional intelligence, physical wellness and creative expression.'],
+  ['Global leadership','Cultural awareness and ethical principles for an interconnected world.'],
+  ['Innovation and adaptability','Technology, future skills and an entrepreneurial mindset.'],
+  ['Sustainable impact','Environmental care and social responsibility beyond our walls. Fruit for others to share.'],
+];
+---
+<section class="grow" data-grow aria-label="Our vision and mission">
+  <Pic pic="sky" name="sky-hills" alt="" sizes="max(100vw, 900px)" />
+  <div class="wrap">
+    <div class="grow-tree" aria-hidden="true">{steps.map((_, i) => <Pic name={`tree-${i + 1}`} alt="" sizes="(max-width:800px) 240px, 520px" max={520} class={i === 0 ? 'on' : ''} />)}</div>
+    <ol>{steps.map(([t, d, k]) => <li><h2>{k ? `${k}. ${t}.` : t}</h2><p class="lead">{d}</p></li>)}</ol>
+  </div>
+</section>
+<script>
+  const g = document.querySelector('[data-grow]');
+  if (g) {
+    const li = [...g.querySelectorAll('li')], fr = [...g.querySelectorAll<HTMLImageElement>('.grow-tree img')]; let at = 0, raf = 0;
+    const draw = () => {
+      const line = innerHeight * (innerWidth <= 800 ? .34 : .6); let n = 0; li.forEach((l, i) => { if (l.getBoundingClientRect().top < line) n = i; });
+      li.forEach((l, i) => l.classList.toggle('on', i === n));
+      if (n !== at) { at = n; fr.forEach((f, i) => f.classList.toggle('on', i === n)); }
+    };
+    addEventListener('scroll', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(draw); }, { passive: true }); draw();
+    new IntersectionObserver((e, o) => { if (e[0].isIntersecting) { fr.forEach(f => f.loading = 'eager'); o.disconnect(); } }, { rootMargin: '1200px' }).observe(g);
+  }
+</script>

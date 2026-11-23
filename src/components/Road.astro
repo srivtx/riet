@@ -1,0 +1,10 @@
+---
+// The school bus drives along the painted road as you scroll
+import Pic from './Pic.astro'; import { wa } from '../site';
+---
+<section class="road" id="transport">
+  <Pic pic="sky" name="sky-road" alt="" sizes="max(100vw, 900px)" />
+  <div class="wrap"><div><h2>The yellow bus</h2><p class="lead">RIET buses and vans carry students to school and out on study tours. Message us your location and we will tell you about routes near you.</p><a class="btn" href={wa('Hello RIET, does the school bus cover my area? I live in ')} target="_blank" rel="noopener" data-sent>Check my area</a></div>
+  <div class="arch"><Pic name="school-bus" alt="Students in front of the RIET school bus and van" sizes="(max-width:800px) 92vw, 46vw" /></div></div>
+  <div class="bus" aria-hidden="true"><Pic name="art-bus" alt="" sizes="260px" max={560} /></div>
+</section>

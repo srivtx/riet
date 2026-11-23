@@ -41,3 +41,12 @@ Pinterest round two (kept): grouped colour-coded dropdowns, scroll wheels, botto
 - **Founder:** eye contact, formal dress and a warm face signal authority and approachability. Navy suit on Home, bandhgala with a Sambalpuri pocket square on About. He stands in front of the RIET sun.
 - **Cards:** one hand-painted object per worry (certificate, book and diya, bus, savings pot). Stages climb like stairs, because children grow.
 - **Rule:** generated art is for skies, objects and the founder's clothing only. Never for students, staff, classrooms or campus buildings.
+
+## Round four: feeling, then action
+- **Visit planner:** writing down a date *and time* raised follow-through in a large field experiment; date alone did not ([Milkman et al.](https://www.nber.org/papers/w17183)). It was a vaccination study, so this is a reasoned transfer, not proof for schools.
+- **"What is the one thing worrying you?"** Parents can feel shy of asking teachers (commentary, not hard evidence). Naming the worry for them makes the first message easy.
+- **Peak and end:** after WhatsApp opens, the site says what happens next and gives a phone number if it failed.
+- **Memory:** class, campus and kind of schooling are remembered on the family's own device.
+- **Year sun:** names sit on the rays, each event can hold several photos, and it tours slowly until someone takes over (with Pause).
+- **About:** a mango seed grows frame by frame as the vision unfolds. Growth is the promise every parent is buying.
+- **Campus life:** the school bus drives the painted road as you scroll.

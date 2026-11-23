@@ -1,0 +1,8 @@
+---
+import Pic from './Pic.astro'; import { wa } from '../site';
+const w = [['My child is shy','Hello RIET. My child is shy and takes time with new people. How would you help them settle in?'],['Is my child ready for school?','Hello RIET. I am not sure whether my child is ready for school. Could someone guide me?'],['We are changing board or medium','Hello RIET. We are changing board or medium. How would you help my child catch up?'],['Maths is a struggle','Hello RIET. My child finds maths hard. What support do you give?'],['We both work full days','Hello RIET. We both work full days. Please tell us about day boarding and timings.'],['Hostel life worries me','Hello RIET. I am thinking about boarding but I am worried about hostel life. Can we talk?'],['We have just moved here','Hello RIET. We have just moved here. Can my child join during the session?'],['Something else','Hello RIET. I would like to talk about my child. ']];
+---
+<section class="worry"><div class="wrap">
+  <div><h2>What is the one thing worrying you?</h2><p class="lead">Every parent carries one. Tap yours and start there. No question is too small.</p><Pic name="art-elephant" alt="" sizes="220px" max={500} /></div>
+  <ul>{w.map(([t, m]) => <li><a href={wa(m)} target="_blank" rel="noopener" data-sent>{t}</a></li>)}</ul>
+</div></section>

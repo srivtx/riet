@@ -8,18 +8,10 @@ import Near from '../components/Near.astro';
 import ClassFinder from '../components/ClassFinder.astro';
 import Founder from '../components/Founder.astro';
 import Stages from '../components/Stages.astro';
+import Year from '../components/Year.astro';
+import Worry from '../components/Worry.astro';
 import Close from '../components/Close.astro';
 import { img, wa } from '../site';
-const year = [
-  ['Foundation Day', 'foundation-day', 'In January 2026 the school turned sixteen, and celebrated the way every birthday should be: with cake.'],
-  ['Science Fair', 'science-fair', 'Students build it, explain it and defend it in front of teachers and parents.'],
-  ['Saraswati Puja', 'saraswati-puja', 'Books rest for a morning while the school asks for the blessing of learning.'],
-  ['Annual Sports', 'sports-march', 'A march past, medals and a podium worth training for.'],
-  ['Raksha Bandhan', 'raksha-bandhan', 'The hall fills up for stories, songs and a promise to look out for each other.'],
-  ['Study Tour', 'study-tour', 'A day out where the lesson is under your feet, not on the board.'],
-  ['Annual Function', 'annual-function', 'RIET Jayanta: lights, costumes and a first time on stage for many.'],
-  ['Christmas', 'christmas', 'Santa caps from the smallest class to the tallest teacher.'],
-].map(([t, i, d]) => ({ t, i, d }));
 const asks = [
   ['Is it a recognised school?', 'Our Thakurpatna campus is CBSE affiliated for Classes 1 to 12, No. 1530488. The letter is online for you to read.', '/documents/cbse-affiliation-letter.pdf', 'Read the letter', 'art-certificate'],
   ['Who will teach my child?', 'Trained PGT, TGT and PRT teachers, with a special educator and counsellors on the team.', '/academics/', 'See how we teach', 'art-book'],
@@ -34,7 +26,7 @@ const asks = [
       <div class="hero-copy">
         <h1>Big dreams start close to home.</h1>
         <p class="lead">Pre-Nursery to Class 12 in Bhubaneswar and Jajpur Road. Day school, day boarding and boarding, since 2010.</p>
-        <p class="acts"><a class="btn" href="/admissions/#enquire">Plan a school visit</a><a class="more" href="/campus-life/">Look around campus</a></p>
+        <p class="acts"><a class="btn" href="/admissions/#visit">Plan a school visit</a><a class="more" href="/campus-life/">Look around campus</a></p>
       </div>
       <div class="hero-sun"><Sun name="assembly-cheer" alt="RIET students in red, orange and green cheering with their teachers, framed by the school's sun emblem" /></div>
     </div>
@@ -46,22 +38,7 @@ const asks = [
     <div>{asks.map(([q, a, h, l, i]) => <article class={i}><div><h3>{q}</h3><p>{a}</p><a class="more" href={h}>{l}</a></div><Pic name={i} alt="" sizes="(max-width:800px) 150px, 262px" max={560} /></article>)}</div>
   </section>
 
-  <section class="year" aria-labelledby="yh">
-    <div class="wrap">
-      <div class="year-head"><h2 id="yh">A year under the RIET sun</h2><p>Pick a ray. Each one is a day our students talk about for months.</p></div>
-      <div class="dial" data-dial>
-        <div class="dial-sun">
-          <svg viewBox="0 0 1000 520" aria-hidden="true">
-            {year.map((_, i) => <polygon class="dray" data-i={i} points="0,-9 400,-30 515,0 400,30 0,9" transform={`translate(500 520) rotate(${-168 + i * 22.3})`} />)}
-            <path d="M120 520A380 380 0 0 1 880 520Z" class="ring" />
-          </svg>
-          <div class="frames">{year.map((y, i) => <Pic name={y.i} alt={y.t} sizes="(max-width:800px) 80vw, 720px" class={i === 6 ? 'on' : ''} />)}</div>
-        </div>
-        <div class="tabs" role="tablist" aria-label="School events">{year.map((y, i) => <button role="tab" id={`t${i}`} aria-controls="dial-text" aria-selected={i === 6 ? 'true' : 'false'} tabindex={i === 6 ? 0 : -1} data-d={y.d}>{y.t}</button>)}</div>
-        <p class="dial-text" id="dial-text" role="tabpanel" aria-live="polite">{year[6].d}</p>
-      </div>
-    </div>
-  </section>
+  <Year />
 
   <Founder />
 
@@ -75,24 +52,9 @@ const asks = [
     <div class="wrap"><h2>Ready for the world. Rooted in Odisha.</h2><p>Olympiads and computers on weekdays, Sambalpuri steps on stage. Our students grow up at ease with both.</p><a class="more" href="/gallery/">See the gallery</a></div>
   </section>
 
+  <Worry />
   <Films />
 
   <Near title="Three campuses, one family" />
   <Close />
 </Base>
-<script>
-  const root = document.querySelector('[data-dial]')!;
-  const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role=tab]')], rays = [...root.querySelectorAll('.dray')], pics = [...root.querySelectorAll('.frames img')], txt = root.querySelector('.dial-text')!;
-  const go = (i: number, focus = false) => {
-    tabs.forEach((t, n) => { t.setAttribute('aria-selected', String(n === i)); t.tabIndex = n === i ? 0 : -1; });
-    rays.forEach((r, n) => r.classList.toggle('on', n === i)); pics.forEach((p, n) => p.classList.toggle('on', n === i));
-    txt.textContent = tabs[i].dataset.d!; if (focus) tabs[i].focus({ preventScroll: true }); const bar = tabs[0].parentElement!; bar.scrollTo({ left: tabs[i].offsetLeft - bar.offsetLeft - bar.clientWidth / 2 + tabs[i].offsetWidth / 2, behavior: 'smooth' });
-  };
-  tabs.forEach((t, i) => { t.onclick = () => go(i); t.onkeydown = e => { const k = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (k) go((i + k + tabs.length) % tabs.length, true); }; });
-  rays.forEach((r, i) => r.addEventListener('click', () => go(i))); go(6);
-  // Hovering a name lights its ray, and swiping the sun turns the year
-  tabs.forEach((t, i) => { t.onpointerenter = () => rays[i].classList.add('hint'); t.onpointerleave = () => rays[i].classList.remove('hint'); });
-  const sun = root.querySelector<HTMLElement>('.dial-sun')!; let x0 = 0;
-  sun.addEventListener('touchstart', e => x0 = e.touches[0].clientX, { passive: true });
-  sun.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 45) { const i = tabs.findIndex(t => t.tabIndex === 0); go((i + (dx < 0 ? 1 : -1) + tabs.length) % tabs.length); } });
-</script>

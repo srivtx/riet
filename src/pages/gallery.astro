@@ -1,4 +1,6 @@
 ---
+import Close from '../components/Close.astro';
+import Viewer from '../components/Viewer.astro';
 import Pic from '../components/Pic.astro';
 import Base from '../layouts/Base.astro'; import Head from '../components/Head.astro';
 import { getImage } from 'astro:assets'; import { img } from '../site';
@@ -10,22 +12,20 @@ const cats = ['All','Culture','Sports','Trips','Learning','Campus'];
   <Head sky="temple" title="This is what school feels like." lead="Real days, real students, no stock photos." />
   <section class="wrap gal">
     <div class="chips" role="group" aria-label="Filter photos">{cats.map((c, i) => <button aria-pressed={i === 0 ? 'true' : 'false'} data-c={c}>{c} <small>{c === 'All' ? items.length : items.filter(i => i[2] === c).length}</small></button>)}</div>
-    <div class="grid">{items.map(([i, t, c], n) => <button data-cat={c} data-full={full[n]} data-t={t}><Pic name={i} alt={t} sizes="(max-width:700px) 92vw, 33vw" /><span>{t}</span></button>)}</div>
+    <div class="mosaic">{items.map(([i, t, c], n) => <button class:list={{ big: [0, 1, 5, 9, 11, 15].includes(n) }} data-cat={c} data-full={full[n]} data-w={img(i).width} data-h={img(i).height} data-t={t}><Pic name={i} alt={t} sizes="(max-width:800px) 92vw, 46vw" now={n < 2} /><span>{t}</span></button>)}</div>
   </section>
-  <dialog class="box"><img alt="" /><p></p><div><button data-go="-1">Previous</button><button data-go="1" autofocus>Next</button><button data-go="0">Close</button></div></dialog>
+  <Viewer />
+  <Close />
 </Base>
 <script>
-  const g = [...document.querySelectorAll<HTMLButtonElement>('.grid button')], chips = [...document.querySelectorAll<HTMLButtonElement>('.chips button')];
+  import { view, type Shot } from '../scripts/viewer';
+  const g = [...document.querySelectorAll<HTMLButtonElement>('.mosaic button')], chips = [...document.querySelectorAll<HTMLButtonElement>('.chips button')], m = document.querySelector('.mosaic')!;
   chips.forEach(b => b.onclick = () => {
-    const run = () => { chips.forEach(x => x.setAttribute('aria-pressed', String(x === b))); g.forEach(x => x.hidden = b.dataset.c !== 'All' && x.dataset.cat !== b.dataset.c); };
-    document.startViewTransition ? document.startViewTransition(run) : run();
+    chips.forEach(x => x.setAttribute('aria-pressed', String(x === b))); const all = b.dataset.c === 'All'; m.classList.toggle('few', !all);
+    g.forEach(x => { x.hidden = !all && x.dataset.cat !== b.dataset.c; if (!x.hidden) x.animate({ opacity: [.2, 1], scale: ['.97', '1'] }, { duration: 260, easing: 'ease-out' }); });
   });
-  const d = document.querySelector<HTMLDialogElement>('dialog.box')!, im = d.querySelector('img')!; let at = 0;
-  const list = () => g.filter(x => !x.hidden);
-  const show = (i: number) => { const l = list(); at = (i + l.length) % l.length; const b = l[at]; im.src = b.querySelector('img')!.currentSrc; const full = new Image(); full.src = b.dataset.full!; full.decode().then(() => { if (list()[at] === b) im.src = full.src; }).catch(() => {}); [1, -1].forEach(k => { new Image().src = l[(at + k + l.length) % l.length].dataset.full!; }); im.alt = b.dataset.t!; d.querySelector('p')!.textContent = `${b.dataset.t}, ${at + 1} of ${l.length}`; };
-  g.forEach(b => b.onclick = () => { show(list().indexOf(b)); d.showModal(); });
-  d.onclick = e => { const go = (e.target as HTMLElement).dataset?.go; if (e.target === d || go === '0') d.close(); else if (go) show(at + +go); };
-  d.onkeydown = e => { if (e.key === 'ArrowRight') show(at + 1); if (e.key === 'ArrowLeft') show(at - 1); };
-  let x0 = 0; im.addEventListener('touchstart', e => x0 = e.touches[0].clientX, { passive: true });
-  im.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) show(at + (dx < 0 ? 1 : -1)); });
+  const list = (): Shot[] => g.filter(b => !b.hidden).map(b => ({ el: b, img: b.querySelector('img')!, full: b.dataset.full!, w: +b.dataset.w!, h: +b.dataset.h!, t: b.dataset.t! }));
+  g.forEach(b => b.onclick = () => { const l = list(); view(l, l.findIndex(s => s.el === b)); });
+  // Fetch the sharp version while the finger or cursor is on its way
+  g.forEach(b => b.addEventListener('pointerenter', () => { if (!(navigator as any).connection?.saveData) new Image().src = b.dataset.full!; }, { once: true }));
 </script>

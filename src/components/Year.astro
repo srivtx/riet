@@ -1,0 +1,72 @@
+---
+// The year dial: event names sit on the tips of the sun's rays. Every event can hold several photos.
+import Pic from './Pic.astro'; import Viewer from './Viewer.astro';
+import { getImage } from 'astro:assets'; import { img } from '../site';
+const year: [string, string, [string, string, string?][]][] = [
+  ['Foundation Day', 'In January 2026 the school turned sixteen, and celebrated the way every birthday should be: with cake.', [['foundation-day', 'Sixteenth Foundation Day cake', '50% 45%']]],
+  ['Science Fair', 'Students build it, explain it and defend it in front of teachers and parents.', [['science-fair', 'Science Fair, students and teachers', '50% 38%']]],
+  ['Saraswati Puja', 'Books rest for a morning while the school asks for the blessing of learning.', [['saraswati-puja', 'Saraswati Puja at school', '70% 45%']]],
+  ['Annual Sports', 'A march past, medals and a podium worth training for.', [['sports-march', 'March past at Annual Sports', '50% 70%'], ['sports-podium', 'On the podium', '50% 35%']]],
+  ['Raksha Bandhan', 'The hall fills up for stories, songs and a promise to look out for each other.', [['raksha-bandhan', 'Raksha Bandhan in the hall', '50% 40%']]],
+  ['Study Tour', 'A day out where the lesson is under your feet, not on the board.', [['study-tour', 'All together on tour', '50% 55%'], ['science-centre', 'Regional Science Centre, Bhubaneswar', '50% 45%'], ['assembly-cheer', 'A very happy audience', '50% 65%'], ['school-bus', 'The yellow bus', '50% 65%']]],
+  ['Annual Function', 'RIET Jayanta: lights, costumes and a first time on stage for many.', [['annual-function', 'RIET Jayanta, annual function', '50% 70%'], ['sambalpuri-dance', 'Ready in Sambalpuri', '50% 35%'], ['classical-dance', 'Dance performance', '50% 60%'], ['group-dance', 'The little ones on stage', '50% 75%']]],
+  ['Christmas', 'Santa caps from the smallest class to the tallest teacher.', [['christmas', 'Christmas at RIET', '50% 45%']]],
+];
+const start = 6;
+const shots = await Promise.all(year.flatMap(([, , p], e) => p.map(async ([n, t, pos]) => ({ n, t, pos, e, w: img(n).width, h: img(n).height, full: (await getImage({ src: img(n), format: 'webp', width: Math.min(1400, img(n).width), quality: 68 })).src }))));
+const first = shots.findIndex(s => s.e === start);
+const ang = (i: number) => 168 - i * 22.3;
+---
+<section class="year" aria-labelledby="yh">
+  <div class="wrap dial" data-dial>
+    <h2 id="yh">A year under the RIET sun</h2>
+    <p class="dial-text" id="dial-text" role="tabpanel" aria-live="polite">{year[start][1]}</p>
+    <div class="dial-sun">
+      <div class="tabs" role="tablist" aria-label="School events">{year.map(([t, d, p], i) => <button role="tab" aria-controls="dial-text" aria-selected={i === start ? 'true' : 'false'} tabindex={i === start ? 0 : -1} data-d={d} style={`--c:${Math.cos(ang(i) * Math.PI / 180).toFixed(4)};--s:${Math.sin(ang(i) * Math.PI / 180).toFixed(4)}`}>{t}{p.length > 1 && <small>{p.length}</small>}</button>)}</div>
+      <div class="orb">
+        <svg viewBox="0 0 1000 520" aria-hidden="true">
+          {year.map((_, i) => <polygon class:list={['dray', { on: i === start }]} points="0,-9 400,-30 515,0 400,30 0,9" transform={`translate(500 520) rotate(${-ang(i)})`} />)}
+          <path d="M120 520A380 380 0 0 1 880 520Z" class="ring" />
+        </svg>
+        <div class="frames">{shots.map((s, i) => <Pic name={s.n} alt={s.t} sizes="(max-width:800px) 80vw, 720px" class={i === first ? 'on' : ''} style={`object-position:${s.pos}`} />)}</div>
+        <div class="frame-tools"><button class="peek" data-list={JSON.stringify(shots.map(({ e, w, h, full, t }) => ({ e, w, h, full, t })))}>See full photo</button><button class="tour" aria-pressed="true" hidden>Pause</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+<Viewer />
+<script>
+  import { view, type Shot } from '../scripts/viewer';
+  const root = document.querySelector<HTMLElement>('[data-dial]')!, tabs = [...root.querySelectorAll<HTMLButtonElement>('[role=tab]')], rays = [...root.querySelectorAll('.dray')], pics = [...root.querySelectorAll<HTMLImageElement>('.frames img')], txt = root.querySelector('.dial-text')!, peek = root.querySelector<HTMLButtonElement>('.peek')!, tour = root.querySelector<HTMLButtonElement>('.tour')!, orb = root.querySelector<HTMLElement>('.orb')!;
+  const list: { e: number; w: number; h: number; full: string; t: string }[] = JSON.parse(peek.dataset.list!);
+  const calm = matchMedia('(prefers-reduced-motion:reduce)').matches;
+  let cur = pics.findIndex(p => p.classList.contains('on')), want = cur;
+  const label = () => { const g = list.filter(s => s.e === list[cur].e), k = g.indexOf(list[cur]) + 1; peek.textContent = g.length > 1 ? `See full photo, ${k} of ${g.length}` : 'See full photo'; };
+  // Wait (briefly) for the next picture to be ready, then let it rise over the old one. Never a blank.
+  const show = async (n: number) => {
+    want = n; const p = pics[n]; p.loading = 'eager';
+    await Promise.race([p.decode().catch(() => {}), new Promise(r => setTimeout(r, 700))]);
+    if (want !== n || n === cur) return; pics.forEach(x => x.classList.remove('was')); pics[cur].classList.replace('on', 'was'); p.classList.add('on'); cur = n; label();
+    const nx = pics[(n + 1) % pics.length]; nx.loading = 'eager';
+  };
+  const pick = (e: number, focus = false) => {
+    tabs.forEach((t, k) => { t.setAttribute('aria-selected', String(k === e)); t.tabIndex = k === e ? 0 : -1; }); rays.forEach((r, k) => r.classList.toggle('on', k === e)); txt.textContent = tabs[e].dataset.d!;
+    if (focus) tabs[e].focus({ preventScroll: true }); const bar = tabs[0].parentElement!; if (bar.scrollWidth > bar.clientWidth) bar.scrollTo({ left: tabs[e].offsetLeft - bar.offsetLeft - bar.clientWidth / 2 + tabs[e].offsetWidth / 2, behavior: 'smooth' });
+  };
+  const to = (n: number, focus = false) => { const m = (n + list.length) % list.length; pick(list[m].e, focus); show(m); };
+  const event = (e: number, focus = false) => to(list.findIndex(s => s.e === e), focus);
+  // A slow, quiet tour of the year. It stops for good the moment someone takes over.
+  let on = !calm, seen = false, held = false, timer = 0;
+  const run = () => { clearInterval(timer); if (on && seen && !held) timer = window.setInterval(() => document.hidden || document.querySelector('dialog[open]') || to(want + 1), 5000); };
+  const stop = () => { if (!on) return; on = false; tour.textContent = 'Play'; tour.setAttribute('aria-pressed', 'false'); txt.setAttribute('aria-live', 'polite'); run(); };
+  if (!calm) { tour.hidden = false; txt.setAttribute('aria-live', 'off'); tour.onclick = () => { if (on) return stop(); on = true; tour.textContent = 'Pause'; tour.setAttribute('aria-pressed', 'true'); txt.setAttribute('aria-live', 'off'); to(want + 1); run(); }; }
+  new IntersectionObserver(([x]) => { seen = x.isIntersecting; run(); }, { threshold: .5 }).observe(orb);
+  root.addEventListener('pointerenter', e => { if ((e as PointerEvent).pointerType === 'mouse') { held = true; run(); } }); root.addEventListener('pointerleave', () => { held = false; run(); });
+  root.addEventListener('focusin', () => { held = true; run(); }); root.addEventListener('focusout', () => { held = false; run(); });
+  tabs.forEach((t, i) => { t.onclick = () => { stop(); event(i); }; t.onkeydown = e => { const k = { ArrowRight: 1, ArrowLeft: -1 }[e.key as 'ArrowRight']; if (k) { stop(); event((i + k + tabs.length) % tabs.length, true); } }; t.onpointerenter = () => rays[i].classList.add('hint'); t.onpointerleave = () => rays[i].classList.remove('hint'); });
+  rays.forEach((r, i) => r.addEventListener('click', () => { stop(); event(i); }));
+  let x0 = 0, y0 = 0; orb.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+  orb.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(e.changedTouches[0].clientY - y0)) { stop(); to(want + (dx < 0 ? 1 : -1)); } });
+  const open = () => { stop(); const shots: Shot[] = list.map((s, i) => ({ ...s, el: peek, img: pics[i] })); view(shots, cur); };
+  peek.onclick = open; root.querySelector<HTMLElement>('.frames')!.onclick = open; label();
+</script>

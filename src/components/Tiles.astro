@@ -1,0 +1,9 @@
+---
+// Arched picture tiles, one colour field each
+import Pic from './Pic.astro';
+interface Props { title?: string; items: string[][]; cols?: number }
+const { title, items, cols = 3 } = Astro.props;
+---
+<section class="wrap tiles">{title && <h2>{title}</h2>}
+  <ul style={`--cols:${cols}`}>{items.map(([t, d, a, ...more]) => <li><span class="win"><Pic name={a} alt="" sizes="(max-width:800px) 40vw, 240px" max={500} /></span><div><h3>{t}</h3>{d && <p>{d}</p>}{more.length > 0 && <ul class="dots">{more.map(m => <li>{m}</li>)}</ul>}</div></li>)}</ul>
+</section>

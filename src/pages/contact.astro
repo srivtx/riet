@@ -1,10 +1,12 @@
 ---
-import Base from '../layouts/Base.astro'; import Head from '../components/Head.astro'; import Close from '../components/Close.astro';
-import Near from '../components/Near.astro'; import { tel, phone, email, hours, wa } from '../site';
+import Pic from '../components/Pic.astro';
+import Base from '../layouts/Base.astro'; import Head from '../components/Head.astro'; import Near from '../components/Near.astro'; import Close from '../components/Close.astro';
+import { tel, phone, email, hours, wa } from '../site';
+const ways = [['Message us','WhatsApp is the quickest way. Write in English, Odia or Hindi.',wa(),'Open WhatsApp','art-phone'],['Call us',`${phone}, ${hours}.`,tel,'Call now','art-chai'],['Visit us','Pick a day and a time, and see a school day for yourself.','/admissions/#visit','Plan a visit','art-gate']];
 ---
 <Base title="Contact and campuses | RIET International School" description="Phone, WhatsApp, email and directions for RIET campuses in VSS Nagar Bhubaneswar, Thakurpatna and Ganesh Bazar, Jajpur Road.">
-  <Head sky="city" title="We are closer than you think." lead={`Call ${phone}, ${hours}.`} />
-  <section class="wrap reach"><a class="btn" href={tel}>Call {phone}</a><a class="btn line" href={wa()}>WhatsApp us</a><a class="btn line" href={`mailto:${email}`}>Email us</a><p data-open></p></section>
-  <Near />
+  <Head sky="city" title="We are closer than you think." lead="A message, a call, or a cup of chai at school. Choose what feels easy." />
+  <section class="wrap ways"><ul>{ways.map(([t, d, h, l, a]) => <li><Pic name={a} alt="" sizes="(max-width:800px) 34vw, 210px" max={500} /><div><h2>{t}</h2><p>{d}</p><a class="more" href={h}>{l}</a></div></li>)}</ul><p><span data-open></span> <a href={`mailto:${email}`}>{email}</a></p></section>
+  <Near title="Three campuses, one family" />
   <Close />
 </Base>

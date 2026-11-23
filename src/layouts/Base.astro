@@ -31,7 +31,7 @@ const ld = { '@context': 'https://schema.org', '@type': 'School', name: 'RIET In
   <header class="top"><div class="wrap">
     <a class="logo" href="/" aria-label="RIET International School, home"><Image src={img('logo')} alt="RIET International School, Inspires to Dream" height={152} width={197} loading="eager" /></a>
     <button class="burger" aria-expanded="false" aria-controls="nav">Menu</button>
-    <nav id="nav" aria-label="Main">
+    <nav id="nav" aria-label="Main" class="mainnav">
       {nav.map(([t, h]) => <a href={h} aria-current={path === h ? 'page' : undefined}>{t}</a>)}
       <a class="btn" href="/admissions/#enquire">Enquire</a>
     </nav>
@@ -49,6 +49,7 @@ const ld = { '@context': 'https://schema.org', '@type': 'School', name: 'RIET In
       <p class="legal">© {new Date().getFullYear()} RIET International School. All rights reserved.</p>
     </div>
   </footer>
+  <div class="sent" id="sent" popover="manual" role="status"><p><b>Your message is waiting in WhatsApp.</b><br />Press send there and our admissions team takes over. Did it not open? <a href={tel}>Call {phone}</a></p><button popovertarget="sent" popovertargetaction="hide">Done</button></div>
   <div class="bar"><a href={tel}>Call</a><a class="w" href={wa()}>WhatsApp</a><a href="/contact/">Find us</a></div>
   <script>import '../scripts/site';</script>
 </body>
