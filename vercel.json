@@ -1,0 +1,18 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "astro",
+  "trailingSlash": true,
+  "redirects": [
+    { "source": "/about.html", "destination": "/about/", "permanent": true },
+    { "source": "/MissionVision.html", "destination": "/about/", "permanent": true },
+    { "source": "/Infrastructure.html", "destination": "/campus-life/", "permanent": true },
+    { "source": "/gallery.php", "destination": "/gallery/", "permanent": true },
+    { "source": "/contact.html", "destination": "/contact/", "permanent": true },
+    { "source": "/Contact.html", "destination": "/contact/", "permanent": true },
+    { "source": "/mandatory-disclosure.php", "destination": "/mandatory-disclosure/", "permanent": true }
+  ],
+  "headers": [
+    { "source": "/(.*)", "has": [{ "type": "host", "value": "(.*)\\.vercel\\.app" }], "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }] },
+    { "source": "/(.*)", "headers": [{ "key": "X-Content-Type-Options", "value": "nosniff" }, { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }] }
+  ]
+}

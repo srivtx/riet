@@ -36,7 +36,7 @@ export const stages = [
   { name: 'Senior', classes: range(9, 12) },
 ];
 export const classes = stages.flatMap(s => s.classes);
-export const family = 'Let us look at this school together: RIET International School, Bhubaneswar and Jajpur Road. https://rietinternationalschool.com';
+export const family = `Let us look at this school together: RIET International School, Bhubaneswar and Jajpur Road. ${import.meta.env.SITE}`;
 export const videos = [
   { id: 'YRY0DbYCtjw', img: 'video-principal', title: 'A message from the Principal, Bhubaneswar', time: '1:24' },
   { id: 'H5uNLLPDShY', img: 'video-teachers', title: 'Teachers on life at RIET', time: '1:37' },
