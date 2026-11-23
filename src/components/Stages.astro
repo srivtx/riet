@@ -1,0 +1,9 @@
+---
+import { Image } from 'astro:assets'; import { img } from '../site';
+const { more } = Astro.props;
+const s = [['Pre-Nursery to UKG','Play, stories, songs, and the confidence to speak up.','art-elephant'],['Class 1 to 5','Reading, number sense and curiosity about everything.','art-kite'],['Class 6 to 8','Labs, computers and Olympiads.','art-microscope'],['Class 9 to 12','Focused preparation for board exams and what follows.','art-globe']];
+---
+<section class="stairs"><div class="wrap">
+  <div class="stairs-head"><h2>From first letters to final boards</h2><p class="lead">One school family across every stage, so your child never has to start over.</p>{more && <a class="more" href="/academics/">How we teach</a>}</div>
+  <ol>{s.map(([t, d, i]) => <li><Image src={img(i)} alt="" width={300} /><div><b>{t}</b><span>{d}</span></div></li>)}</ol>
+</div></section>

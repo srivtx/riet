@@ -6,7 +6,7 @@ const full = await Promise.all(items.map(async ([i]) => (await getImage({ src: i
 const cats = ['All','Culture','Sports','Trips','Learning','Campus'];
 ---
 <Base title="Gallery | RIET International School" description="Photos from festivals, sports, study tours and classrooms at RIET International School.">
-  <Head title="This is what school feels like." lead="Real days, real students, no stock photos." />
+  <Head sky="temple" title="This is what school feels like." lead="Real days, real students, no stock photos." />
   <section class="wrap gal">
     <div class="chips" role="group" aria-label="Filter photos">{cats.map((c, i) => <button aria-pressed={i === 0 ? 'true' : 'false'} data-c={c}>{c} <small>{c === 'All' ? items.length : items.filter(i => i[2] === c).length}</small></button>)}</div>
     <div class="grid">{items.map(([i, t, c], n) => <button data-cat={c} data-full={full[n]} data-t={t}><Image src={img(i)} alt={t} widths={[420, 800]} sizes="(max-width:700px) 92vw, 33vw" /><span>{t}</span></button>)}</div>

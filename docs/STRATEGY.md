@@ -35,3 +35,9 @@ SAI: pale, serif, posed studio children, brochure form. ODM: group portal of log
 | Our judgement: parents research late at night | The sky follows Bhubaneswar time, and the site says when the office opens |
 
 Pinterest round two (kept): grouped colour-coded dropdowns, scroll wheels, bottom sheets on phones, chips that show state by fill. Rejected: trust badges and counters with no source.
+
+## Round three: one bright morning
+- **Sky:** always a light Odisha morning. A single, recognisable mood builds memory and calm; a night version split the brand in two. Each page has its own view: Home and Gallery the temple horizon, About the Mahanadi and boita sails, Academics kites, Campus life the hills, Admissions the road to school, Contact Bhubaneswar.
+- **Founder:** eye contact, formal dress and a warm face signal authority and approachability. Navy suit on Home, bandhgala with a Sambalpuri pocket square on About. He stands in front of the RIET sun.
+- **Cards:** one hand-painted object per worry (certificate, book and diya, bus, savings pot). Stages climb like stairs, because children grow.
+- **Rule:** generated art is for skies, objects and the founder's clothing only. Never for students, staff, classrooms or campus buildings.

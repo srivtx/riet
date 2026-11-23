@@ -22,7 +22,7 @@ const ld = { '@context': 'https://schema.org', '@type': 'School', name: 'RIET In
   <meta name="theme-color" content="#d9241b" />
   <meta property="og:title" content={title} /><meta property="og:description" content={description} />
   <meta property="og:image" content={new URL('/og.jpg', Astro.site)} /><meta property="og:url" content={url} /><meta name="twitter:card" content="summary_large_image" />
-  <script is:inline>(()=>{const h=new Date(Date.now()+198e5).getUTCHours();document.documentElement.dataset.sky=h<5||h>=19?'night':h<7?'dawn':h<17?'day':'dusk';document.documentElement.classList.add('js')})()</script>
+  <script is:inline>document.documentElement.classList.add('js')</script>
   <slot name="head" />
   <script type="application/ld+json" set:html={JSON.stringify(ld)} is:inline />
 </head>

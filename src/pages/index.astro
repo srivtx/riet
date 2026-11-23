@@ -5,10 +5,13 @@ import Ask from '../components/Ask.astro';
 import Films from '../components/Films.astro';
 import Near from '../components/Near.astro';
 import ClassFinder from '../components/ClassFinder.astro';
+import Founder from '../components/Founder.astro';
+import Stages from '../components/Stages.astro';
 import Close from '../components/Close.astro';
 import { Image, getImage } from 'astro:assets';
 import { img, wa } from '../site';
 const hero = await getImage({ src: img('assembly-cheer'), width: 1440, format: 'webp' });
+const sky = await getImage({ src: img('sky-temple'), format: 'webp', quality: 84 });
 const year = [
   ['Foundation Day', 'foundation-day', 'In January 2026 the school turned sixteen, and celebrated the way every birthday should be: with cake.'],
   ['Science Fair', 'science-fair', 'Students build it, explain it and defend it in front of teachers and parents.'],
@@ -20,15 +23,16 @@ const year = [
   ['Christmas', 'christmas', 'Santa caps from the smallest class to the tallest teacher.'],
 ].map(([t, i, d]) => ({ t, i, d }));
 const asks = [
-  ['Is it a recognised school?', 'Our Thakurpatna campus is CBSE affiliated for Classes 1 to 12, No. 1530488. The letter is online for you to read.', '/documents/cbse-affiliation-letter.pdf', 'Read the letter'],
-  ['Who will teach my child?', 'Trained PGT, TGT and PRT teachers, with a special educator and counsellors on the team.', '/academics/', 'See how we teach'],
-  ['How will they get to school?', 'RIET runs its own buses and vans. Ask us whether your street is on a route.', wa('Hello RIET, does the school bus cover my area? I live in '), 'Check my area'],
-  ['What does it cost?', 'Fees depend on class and on day, day boarding or boarding. We send the current sheet directly.', wa('Hello RIET, please share the fee structure for Class '), 'Get the fee sheet'],
+  ['Is it a recognised school?', 'Our Thakurpatna campus is CBSE affiliated for Classes 1 to 12, No. 1530488. The letter is online for you to read.', '/documents/cbse-affiliation-letter.pdf', 'Read the letter', 'art-certificate'],
+  ['Who will teach my child?', 'Trained PGT, TGT and PRT teachers, with a special educator and counsellors on the team.', '/academics/', 'See how we teach', 'art-book'],
+  ['How will they get to school?', 'RIET runs its own buses and vans. Ask us whether your street is on a route.', wa('Hello RIET, does the school bus cover my area? I live in '), 'Check my area', 'art-bus'],
+  ['What does it cost?', 'Fees depend on class and on day, day boarding or boarding. We send the current sheet directly.', wa('Hello RIET, please share the fee structure for Class '), 'Get the fee sheet', 'art-pot'],
 ];
 ---
 <Base title="RIET International School | Bhubaneswar and Jajpur Road" description="Day school, day boarding and boarding from Pre-Nursery to Class 12 in Bhubaneswar and Jajpur Road, Odisha. RIET International School, inspiring children to dream since 2010.">
-  <link slot="head" rel="preload" as="image" href={hero.src} fetchpriority="high" />
+  <link slot="head" rel="preload" as="image" href={hero.src} fetchpriority="high" /><link slot="head" rel="preload" as="image" href={sky.src} />
   <section class="hero">
+    <div class="sky" style={`background-image:url(${sky.src})`}></div>
     <div class="wrap">
       <div class="hero-copy">
         <h1>Big dreams start close to home.</h1>
@@ -42,7 +46,7 @@ const asks = [
 
   <section class="wrap asks">
     <h2>The four things every parent asks us first</h2>
-    <div>{asks.map(([q, a, h, l]) => <article><h3>{q}</h3><p>{a}</p><a class="more" href={h}>{l}</a></article>)}</div>
+    <div>{asks.map(([q, a, h, l, i]) => <article class={i}><div><h3>{q}</h3><p>{a}</p><a class="more" href={h}>{l}</a></div><Image src={img(i)} alt="" width={420} /></article>)}</div>
   </section>
 
   <section class="year" aria-labelledby="yh">
@@ -62,24 +66,9 @@ const asks = [
     </div>
   </section>
 
-  <section class="founder"><div class="wrap">
-    <Image src={img('founder')} alt="Er. Janmejaya Rout, Founder of RIET" width={478} />
-    <div>
-      <blockquote>My mission is to create a niche where learning will not be just a series of instructions but a passion.</blockquote>
-      <p><b>Er. Janmejaya Rout</b><br />Founder, 28+ years of excellence</p>
-      <a class="more" href="/about/">What we believe</a>
-    </div>
-  </div></section>
+  <Founder />
 
-  <section class="wrap stages">
-    <div><h2>From first letters to final boards</h2><p class="lead">One school family across every stage, so your child never has to start over.</p><a class="more" href="/academics/">How we teach</a></div>
-    <ol>
-      <li><b>Pre-Nursery to UKG</b><span>Play, stories, songs, and the confidence to speak up.</span></li>
-      <li><b>Class 1 to 5</b><span>Reading, number sense and curiosity about everything.</span></li>
-      <li><b>Class 6 to 8</b><span>Labs, computers and Olympiads.</span></li>
-      <li><b>Class 9 to 12</b><span>Focused preparation for board exams and what follows.</span></li>
-    </ol>
-  </section>
+  <Stages more />
 
   <ClassFinder />
 
