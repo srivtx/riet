@@ -1,13 +1,11 @@
 ---
-import { Image, getImage } from 'astro:assets';
-import { img as pic } from '../site';
-interface Props { title: string; lead: string; img?: ImageMetadata; alt?: string; pos?: string; sky?: string; flip?: boolean }
+import Pic from './Pic.astro';
+interface Props { title: string; lead: string; img?: string; alt?: string; pos?: string; sky?: string; flip?: boolean }
 const { title, lead, img, alt = '', pos = 'center', sky, flip } = Astro.props;
-const bg = sky && await getImage({ src: pic(`sky-${sky}`), format: 'webp', quality: 82 });
 ---
 <section class:list={['page-head', { bare: !img, flip }]}>
-  {bg && <div class="sky" style={`background-image:url(${bg.src})`}></div>}
+  {sky && <Pic pic="sky" name={`sky-${sky}`} alt="" sizes="max(100vw, 700px)" now />}
   <div class="wrap">
   <div><h1>{title}</h1><p class="lead">{lead}</p></div>
-  {img && <div class="arch"><Image src={img} alt={alt} widths={[480, 800]} sizes="(max-width:800px) 92vw, 46vw" loading="eager" style={`object-position:${pos}`} /></div>}
+  {img && <div class="arch"><Pic name={img} alt={alt} sizes="(max-width:800px) 92vw, 46vw" now style={`object-position:${pos}`} /></div>}
 </div></section>

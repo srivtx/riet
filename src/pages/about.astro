@@ -1,15 +1,16 @@
 ---
+import Pic from '../components/Pic.astro';
 import Base from '../layouts/Base.astro'; import Head from '../components/Head.astro'; import Founder from '../components/Founder.astro'; import Close from '../components/Close.astro';
-import { Image } from 'astro:assets'; import { img } from '../site';
+import { img } from '../site';
 const values = [['Excellence','We set high expectations for learning, for conduct and for ourselves.'],['Integrity','Honesty, transparency and moral courage, in class and out of it.'],['Respect','Every individual has inherent worth. Diversity makes us stronger.'],['Innovation','We encourage creative thinking and welcome new ideas.'],['Collaboration','Students, parents and community work as one team.'],['Compassion','We meet every child with empathy, kindness and genuine concern.']];
 const pillars = [['Holistic excellence','Academic brilliance alongside emotional intelligence, physical wellness and creative expression.'],['Global leadership','Cultural awareness and ethical principles for an interconnected world.'],['Innovation and adaptability','Technology, future skills and an entrepreneurial mindset.'],['Sustainable impact','Environmental care and social responsibility beyond our walls.']];
 ---
 <Base title="About | RIET International School" description="The story, founder, vision, mission and values of RIET International School, Odisha.">
-  <Head sky="river" flip title="A school built on one belief: every child can dream bigger." lead="RIET International School is a vibrant community where students from diverse backgrounds grow academically, take part actively and build lasting experiences." img={img('campus-entrance')} alt="Entrance of the RIET campus building" />
+  <Head sky="river" flip title="A school built on one belief: every child can dream bigger." lead="RIET International School is a vibrant community where students from diverse backgrounds grow academically, take part actively and build lasting experiences." img="campus-entrance" alt="Entrance of the RIET campus building" />
   <Founder look="bandhgala" heading="From our founder" />
   <section class="wrap duo"><div><h2>Our vision</h2><p class="lead">To cultivate an institution where every student discovers their potential, develops a passion for lifelong learning, and becomes a responsible global citizen equipped to make meaningful contributions to society.</p></div><div><h2>Our mission</h2><p class="lead">To provide a nurturing, inclusive learning environment that fosters academic excellence, character development and holistic growth through innovative teaching, a comprehensive curriculum and partnership with parents and community.</p></div></section>
   <section class="tint"><div class="wrap list"><h2>Where that vision leads</h2><dl>{pillars.map(([a,b]) => <div><dt>{a}</dt><dd>{b}</dd></div>)}</dl></div></section>
   <section class="wrap list"><h2>Six values, lived daily</h2><dl>{values.map(([a,b]) => <div><dt>{a}</dt><dd>{b}</dd></div>)}</dl></section>
-  <section class="wrap duo"><div><h2>Families are partners</h2><p>Success is shared. We keep families informed and involved through open communication, and we work together on each student’s development.</p></div><div><Image src={img('science-fair')} alt="Students and teachers together at the Science Fair" widths={[480,900]} sizes="(max-width:800px) 92vw, 46vw" class="round" /></div></section>
+  <section class="wrap duo"><div><h2>Families are partners</h2><p>Success is shared. We keep families informed and involved through open communication, and we work together on each student’s development.</p></div><div><Pic name="science-fair" alt="Students and teachers together at the Science Fair" sizes="(max-width:800px) 92vw, 46vw" class="round" /></div></section>
   <Close />
 </Base>

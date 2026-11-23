@@ -1,7 +1,8 @@
 ---
-import { Image } from 'astro:assets'; import { campuses, img } from '../site';
+import Pic from './Pic.astro';
+import { campuses, img } from '../site';
 const { title } = Astro.props;
 ---
 <section class="wrap near"><div class="near-head">{title && <h2>{title}</h2>}<p><button class="btn line" data-near>Which is nearest to me?</button><output></output></p></div>
-  <div class="near-grid">{campuses.map(c => <a href={c.map} data-lat={c.lat} data-lng={c.lng} data-name={c.name}><span class="view"><Image src={img(c.view)} alt="" widths={[480, 800]} sizes="(max-width:800px) 92vw, 30vw" /></span><b>{c.name}</b><i>{c.city}</i><span>{c.lines}</span><em>{c.note}</em><u>Directions</u></a>)}</div>
+  <div class="near-grid">{campuses.map(c => <a href={c.map} data-lat={c.lat} data-lng={c.lng} data-name={c.name}><span class="view"><Pic name={c.view} alt="" sizes="(max-width:800px) 92vw, 30vw" /></span><b>{c.name}</b><i>{c.city}</i><span>{c.lines}</span><em>{c.note}</em><u>Directions</u></a>)}</div>
 </section>

@@ -1,19 +1,21 @@
 ---
 // The RIET sun, redrawn from the logo's own geometry: 11 rays and a scalloped half wheel.
-interface Props { src: string; alt: string; id: string; focus?: string }
-const { src, alt, id, focus = 'xMidYMid' } = Astro.props;
+import Pic from './Pic.astro';
+interface Props { name: string; alt: string }
+const { name, alt } = Astro.props;
 const cx = 500, cy = 520;
 const rays = [12.8, 27.7, 43.6, 58.8, 75.4, 90, 104.6, 121.2, 136.4, 152.3, 167.2];
 const col = ['g','g','k','k','o','o','o','k','k','g','g'];
 const pt = (r: number, a: number) => `${(cx + r * Math.cos(a * Math.PI / 180)).toFixed(1)},${(cy - r * Math.sin(a * Math.PI / 180)).toFixed(1)}`;
 const dots = Array.from({ length: 12 }, (_, i) => 7.5 + i * 15);
 ---
-<svg class="sun" viewBox="0 0 1000 520" role="img" aria-label={alt}>
-  <defs><clipPath id={id}><path d={`M${cx-338} ${cy}A338 338 0 0 1 ${cx+338} ${cy}Z`} /></clipPath></defs>
-  <g class="rays">
-    {rays.map((a, i) => <polygon class={`ray ${col[i]}`} style={`--i:${Math.abs(i-5)}`} points={`${pt(150,a-3)} ${pt(330,a+3.4)} ${pt(515,a)} ${pt(330,a-3.4)} ${pt(150,a+3)}`} />)}
-  </g>
-  <path class="ring" d={`M${cx-384} ${cy}A384 384 0 0 1 ${cx+384} ${cy}Z`} />
-  <image href={src} x="62" y="92" width="876" height="471" preserveAspectRatio={`${focus} slice`} clip-path={`url(#${id})`} />
-  {dots.map(a => { const [x, y] = pt(338, a).split(','); return <circle class="ring" cx={x} cy={y} r="15" /> })}
-</svg>
+<div class="sunbox">
+  <svg class="sun" viewBox="0 0 1000 520" aria-hidden="true">
+    <g class="rays">
+      {rays.map((a, i) => <polygon class={`ray ${col[i]}`} style={`--i:${Math.abs(i-5)}`} points={`${pt(150,a-3)} ${pt(330,a+3.4)} ${pt(515,a)} ${pt(330,a-3.4)} ${pt(150,a+3)}`} />)}
+    </g>
+    <path class="ring" d={`M${cx-384} ${cy}A384 384 0 0 1 ${cx+384} ${cy}Z`} />
+  </svg>
+  <div class="sun-photo"><Pic name={name} alt={alt} sizes="(max-width:800px) 110vw, 66vw" now /></div>
+  <svg class="sun dots" viewBox="0 0 1000 520" aria-hidden="true">{dots.map(a => { const [x, y] = pt(338, a).split(','); return <circle class="ring" cx={x} cy={y} r="15" /> })}</svg>
+</div>

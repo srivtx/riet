@@ -1,6 +1,5 @@
 ---
-import '@fontsource-variable/anek-latin/wdth.css';
-import '@fontsource-variable/anek-odia/wght.css';
+import latin from '../fonts/anek-latin.woff2?url';
 import '../styles/global.css';
 import { Image } from 'astro:assets';
 import { nav, wa, tel, phone, email, campuses, social, img, hours } from '../site';
@@ -18,6 +17,7 @@ const ld = { '@context': 'https://schema.org', '@type': 'School', name: 'RIET In
   <title>{title}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={url} />
+  <link rel="preload" as="font" type="font/woff2" href={latin} crossorigin />
   <link rel="icon" href="/favicon.png" />
   <meta name="theme-color" content="#d9241b" />
   <meta property="og:title" content={title} /><meta property="og:description" content={description} />

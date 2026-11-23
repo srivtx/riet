@@ -1,16 +1,17 @@
 ---
+import Pic from '../components/Pic.astro';
 import Base from '../layouts/Base.astro'; import Head from '../components/Head.astro'; import Stages from '../components/Stages.astro'; import Close from '../components/Close.astro';
-import { Image } from 'astro:assets'; import { img } from '../site';
+import { img } from '../site';
 const smart = [['Interactive whiteboards','High-resolution digital boards for dynamic lessons.'],['High-speed internet','Seamless access to online resources and content.'],['Audio-visual systems','Multimedia, 3D models and animation that make hard ideas simple.'],['Digital tools','Tablets and devices for hands-on learning and instant feedback.']];
 const oly = [['Understanding','Tests concepts, not memory.'],['Analytical thinking','Builds problem solving under challenge.'],['Exam readiness','Prepares students for future competitive exams.'],['Wider exposure','National and international platforms.'],['Hard work','Rewards patient, honest preparation.'],['Better grades','Sharper thinking carries back into the classroom.']];
 const approach = [['Student first','Teaching tailored to how each child learns, with individual attention and personal guidance.'],['Learning by doing','Classroom ideas connected to real situations, projects and experiments.'],['Whole child','Academic, social, emotional and physical growth, with regular assessment along the way.']];
 ---
 <Base title="Academics | RIET International School" description="How RIET International School teaches, from Pre-Nursery to Class 12: smart classrooms, trained teachers, Olympiads and personal guidance.">
-  <Head sky="kites" title="Curious first. Confident always." lead="A comprehensive curriculum designed to foster intellectual curiosity and critical thinking, preparing students for higher education and the careers that follow." img={img('science-centre')} alt="RIET students at the Regional Science Centre, Bhubaneswar" pos="60% 30%" />
+  <Head sky="kites" title="Curious first. Confident always." lead="A comprehensive curriculum designed to foster intellectual curiosity and critical thinking, preparing students for higher education and the careers that follow." img="science-centre" alt="RIET students at the Regional Science Centre, Bhubaneswar" pos="60% 30%" />
   <section class="wrap list"><h2>How we teach</h2><dl>{approach.map(([a,b]) => <div><dt>{a}</dt><dd>{b}</dd></div>)}</dl></section>
   <Stages />
   <section class="wrap list"><h2>Inside a smart classroom</h2><dl>{smart.map(([a,b]) => <div><dt>{a}</dt><dd>{b}</dd></div>)}</dl></section>
-  <section class="wrap duo" id="teachers"><div><h2>Our teachers</h2><p class="lead">Passionate educators who nurture a love for learning that extends beyond the classroom.</p><p>Through continuous professional development and a student-centred approach, they give students the knowledge, skills and confidence to excel. The team includes a special educator and counsellor and wellness teachers.</p><a class="more" href="https://www.youtube.com/watch?v=H5uNLLPDShY" target="_blank" rel="noopener">Watch teachers talk about RIET</a></div><Image src={img('annual-exam')} alt="Students writing their annual exam" widths={[480,900]} sizes="(max-width:800px) 92vw, 46vw" class="round" /></section>
+  <section class="wrap duo" id="teachers"><div><h2>Our teachers</h2><p class="lead">Passionate educators who nurture a love for learning that extends beyond the classroom.</p><p>Through continuous professional development and a student-centred approach, they give students the knowledge, skills and confidence to excel. The team includes a special educator and counsellor and wellness teachers.</p><a class="more" href="https://www.youtube.com/watch?v=H5uNLLPDShY" target="_blank" rel="noopener">Watch teachers talk about RIET</a></div><Pic name="annual-exam" alt="Students writing their annual exam" sizes="(max-width:800px) 92vw, 46vw" class="round" /></section>
   <section class="tint"><div class="wrap list"><h2>Why we encourage Olympiads</h2><dl>{oly.map(([a,b]) => <div><dt>{a}</dt><dd>{b}</dd></div>)}</dl></div></section>
   <Close />
 </Base>

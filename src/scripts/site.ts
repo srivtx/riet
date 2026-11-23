@@ -51,3 +51,34 @@ document.querySelectorAll<HTMLButtonElement>('[data-near]').forEach(btn => btn.o
     out.textContent = `${cards[i].dataset.name} is nearest, about ${km[i] < 1 ? 'a kilometre' : Math.round(km[i]) + ' km'} in a straight line.`;
   }, () => { out.textContent = 'We could not read your location. Call us and we will guide you.'; }, { timeout: 9000 });
 });
+
+// Images look after themselves.
+// 1. A failed photo is retried; if a new version of the site went live meanwhile, its new address is looked up.
+const net = (navigator as any).connection, slow = net?.saveData || /2g/.test(net?.effectiveType || '');
+let fresh: Promise<Document> | undefined;
+const tries = new WeakMap<HTMLImageElement, number>();
+const order = [...document.images];
+const heal = (i: HTMLImageElement) => {
+  const n = (tries.get(i) ?? 0) + 1; tries.set(i, n); if (n > 4) return;
+  setTimeout(async () => {
+    const swap = (from: HTMLImageElement) => {
+      const a = i.parentElement?.querySelectorAll('source'), b = from.parentElement?.querySelectorAll('source');
+      if (a && b && a.length === b.length) a.forEach((s, k) => { s.srcset = b[k].srcset; });
+      if (from.srcset) i.srcset = from.srcset; i.src = from.getAttribute('src')!;
+    };
+    if (n === 1) { const u = i.src; i.src = ''; i.src = u; return; }
+    try {
+      fresh ??= fetch(location.pathname, { cache: 'reload' }).then(r => { if (!r.ok) throw r; return r.text(); }).then(h => new DOMParser().parseFromString(h, 'text/html'));
+      const same = [...(await fresh).images][order.indexOf(i)]; if (same && same.alt === i.alt) swap(same);
+    } catch { fresh = undefined; }
+  }, [600, 1500, 4000, 9000][n - 1]);
+};
+document.addEventListener('error', e => { const t = e.target; if (t instanceof HTMLImageElement && order.includes(t)) heal(t); }, true);
+order.forEach(i => { if (i.complete && !i.naturalWidth && i.currentSrc) heal(i); });
+addEventListener('online', () => order.forEach(i => { if (i.complete && !i.naturalWidth) { tries.delete(i); heal(i); } }));
+// 2. Once the page is ready, the rest load quietly two at a time, so they are there before you scroll to them.
+if (!slow) addEventListener('load', () => {
+  const rest = order.filter(i => i.loading === 'lazy' && !i.complete);
+  const next = () => { const i = rest.shift(); if (!i) return; if (i.complete) return next(); const go = () => { clearTimeout(t); next(); }; const t = setTimeout(go, 8000); i.addEventListener('load', go, { once: true }); i.addEventListener('error', go, { once: true }); i.loading = 'eager'; };
+  const idle = window.requestIdleCallback ?? ((f: () => void) => setTimeout(f, 400)); idle(() => { next(); next(); });
+});

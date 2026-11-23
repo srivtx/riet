@@ -1,15 +1,16 @@
 ---
+import Pic from '../components/Pic.astro';
 import Base from '../layouts/Base.astro'; import Head from '../components/Head.astro';
-import { Image, getImage } from 'astro:assets'; import { img } from '../site';
+import { getImage } from 'astro:assets'; import { img } from '../site';
 const items = [['assembly-cheer','A day out together','Trips'],['sambalpuri-dance','Sambalpuri dance','Culture'],['sports-march','Annual Sports, VSS Nagar','Sports'],['science-fair','Science Fair','Learning'],['saraswati-puja','Saraswati Puja','Culture'],['classical-dance','Annual function','Culture'],['science-centre','Regional Science Centre','Trips'],['sports-podium','Winners','Sports'],['christmas','Christmas','Culture'],['campus-ground','Campus','Campus'],['study-tour','Study tour','Trips'],['foundation-day','16th Foundation Day','Culture'],['raksha-bandhan','Raksha Bandhan','Culture'],['annual-exam','Annual exam','Learning'],['group-dance','On stage','Culture'],['school-bus','The yellow bus','Trips'],['cbse-welcome','CBSE affiliation','Learning'],['campus-entrance','Campus entrance','Campus']];
-const full = await Promise.all(items.map(async ([i]) => (await getImage({ src: img(i), format: 'webp' })).src));
+const full = await Promise.all(items.map(async ([i]) => (await getImage({ src: img(i), format: 'webp', width: Math.min(1400, img(i).width), quality: 68 })).src));
 const cats = ['All','Culture','Sports','Trips','Learning','Campus'];
 ---
 <Base title="Gallery | RIET International School" description="Photos from festivals, sports, study tours and classrooms at RIET International School.">
   <Head sky="temple" title="This is what school feels like." lead="Real days, real students, no stock photos." />
   <section class="wrap gal">
     <div class="chips" role="group" aria-label="Filter photos">{cats.map((c, i) => <button aria-pressed={i === 0 ? 'true' : 'false'} data-c={c}>{c} <small>{c === 'All' ? items.length : items.filter(i => i[2] === c).length}</small></button>)}</div>
-    <div class="grid">{items.map(([i, t, c], n) => <button data-cat={c} data-full={full[n]} data-t={t}><Image src={img(i)} alt={t} widths={[420, 800]} sizes="(max-width:700px) 92vw, 33vw" /><span>{t}</span></button>)}</div>
+    <div class="grid">{items.map(([i, t, c], n) => <button data-cat={c} data-full={full[n]} data-t={t}><Pic name={i} alt={t} sizes="(max-width:700px) 92vw, 33vw" /><span>{t}</span></button>)}</div>
   </section>
   <dialog class="box"><img alt="" /><p></p><div><button data-go="-1">Previous</button><button data-go="1" autofocus>Next</button><button data-go="0">Close</button></div></dialog>
 </Base>
@@ -21,7 +22,7 @@ const cats = ['All','Culture','Sports','Trips','Learning','Campus'];
   });
   const d = document.querySelector<HTMLDialogElement>('dialog.box')!, im = d.querySelector('img')!; let at = 0;
   const list = () => g.filter(x => !x.hidden);
-  const show = (i: number) => { const l = list(); at = (i + l.length) % l.length; const b = l[at]; im.src = b.dataset.full!; im.alt = b.dataset.t!; d.querySelector('p')!.textContent = `${b.dataset.t}, ${at + 1} of ${l.length}`; };
+  const show = (i: number) => { const l = list(); at = (i + l.length) % l.length; const b = l[at]; im.src = b.querySelector('img')!.currentSrc; const full = new Image(); full.src = b.dataset.full!; full.decode().then(() => { if (list()[at] === b) im.src = full.src; }).catch(() => {}); [1, -1].forEach(k => { new Image().src = l[(at + k + l.length) % l.length].dataset.full!; }); im.alt = b.dataset.t!; d.querySelector('p')!.textContent = `${b.dataset.t}, ${at + 1} of ${l.length}`; };
   g.forEach(b => b.onclick = () => { show(list().indexOf(b)); d.showModal(); });
   d.onclick = e => { const go = (e.target as HTMLElement).dataset?.go; if (e.target === d || go === '0') d.close(); else if (go) show(at + +go); };
   d.onkeydown = e => { if (e.key === 'ArrowRight') show(at + 1); if (e.key === 'ArrowLeft') show(at - 1); };

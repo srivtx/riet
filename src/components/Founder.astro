@@ -1,17 +1,16 @@
 ---
-import { Image, getImage } from 'astro:assets'; import { img } from '../site';
+import Pic from './Pic.astro';
 interface Props { look?: 'suit' | 'bandhgala'; heading?: string }
 const { look = 'suit', heading } = Astro.props;
-const bg = await getImage({ src: img('sky-kites'), format: 'webp', quality: 82 });
 const ang = [10, 26, 42, 58, 74, 90, 106, 122, 138, 154, 170], col = ['g','g','k','k','o','o','o','k','k','g','g'];
 ---
-<section class:list={['founder', look]}><div class="sky" style={`background-image:url(${bg.src})`}></div><div class="wrap">
+<section class:list={['founder', look]}><Pic pic="sky" name="sky-kites" alt="" sizes="max(100vw, 900px)" /><div class="wrap">
   <div class="founder-art">
     <svg viewBox="0 0 1000 520" aria-hidden="true">
       {ang.map((a, i) => <polygon class={`ray ${col[i]}`} style={`--i:${Math.abs(i - 5)}`} points="150,-8 330,-22 515,0 330,22 150,8" transform={`translate(500 520) rotate(${-a})`} />)}
       <path class="ring" d="M116 520A384 384 0 0 1 884 520Z" /><path class="disc-fill" d="M160 520A340 340 0 0 1 840 520Z" />
     </svg>
-    <Image src={img(`founder-${look}`)} alt="Er. Janmejaya Rout, Founder of RIET" loading="eager" decoding="sync" widths={[420, 810]} sizes="(max-width:800px) 60vw, 400px" />
+    <Pic name={`founder-${look}`} alt="Er. Janmejaya Rout, Founder of RIET" sizes="(max-width:800px) 58vw, 370px" max={810} quality={62} />
   </div>
   <div class="founder-words">
     {heading && <h2>{heading}</h2>}

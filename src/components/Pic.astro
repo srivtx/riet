@@ -1,0 +1,20 @@
+---
+// Every photo on the site: AVIF with WebP fallback, the right size for the screen,
+// and a tiny blurred preview (about 150 bytes) so there is never an empty box.
+import { Picture } from 'astro:assets';
+import sharp from 'sharp';
+import { img } from '../site';
+interface Props { name: string; alt: string; sizes: string; widths?: number[]; max?: number; now?: boolean; class?: string; style?: string; pic?: string; id?: string; quality?: number }
+const { name, alt, sizes, max = 1440, now, class: cls, style = '', pic, quality = 50 } = Astro.props;
+const src = img(name);
+const all = [320, 560, 828, 1120];
+const top = Math.min(src.width, max);
+const widths = [...(Astro.props.widths ?? all).filter(w => w < top), top];
+const key = `__lqip_${name}`, g = globalThis as any;
+if (src.format !== 'png' && g[key] === undefined) {
+  const b = await sharp(`src/assets/${name}.jpg`).resize(16).modulate({ saturation: 1.1 }).webp({ quality: 30, effort: 6 }).toBuffer();
+  g[key] = `data:image/webp;base64,${b.toString('base64')}`;
+}
+const bg = g[key] ? `background:url(${g[key]}) center/cover;` : '';
+---
+<Picture src={src} alt={alt} widths={widths} width={top} sizes={now ? sizes : `auto, ${sizes}`} formats={['avif']} fallbackFormat="webp" quality={quality} class={cls} style={bg + style} loading={now ? 'eager' : 'lazy'} decoding={now ? 'sync' : 'async'} fetchpriority={now ? 'high' : undefined} pictureAttributes={{ class: pic }} />

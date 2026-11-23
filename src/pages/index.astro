@@ -1,4 +1,5 @@
 ---
+import Pic from '../components/Pic.astro';
 import Base from '../layouts/Base.astro';
 import Sun from '../components/Sun.astro';
 import Ask from '../components/Ask.astro';
@@ -8,10 +9,7 @@ import ClassFinder from '../components/ClassFinder.astro';
 import Founder from '../components/Founder.astro';
 import Stages from '../components/Stages.astro';
 import Close from '../components/Close.astro';
-import { Image, getImage } from 'astro:assets';
 import { img, wa } from '../site';
-const hero = await getImage({ src: img('assembly-cheer'), width: 1440, format: 'webp' });
-const sky = await getImage({ src: img('sky-temple'), format: 'webp', quality: 84 });
 const year = [
   ['Foundation Day', 'foundation-day', 'In January 2026 the school turned sixteen, and celebrated the way every birthday should be: with cake.'],
   ['Science Fair', 'science-fair', 'Students build it, explain it and defend it in front of teachers and parents.'],
@@ -30,23 +28,22 @@ const asks = [
 ];
 ---
 <Base title="RIET International School | Bhubaneswar and Jajpur Road" description="Day school, day boarding and boarding from Pre-Nursery to Class 12 in Bhubaneswar and Jajpur Road, Odisha. RIET International School, inspiring children to dream since 2010.">
-  <link slot="head" rel="preload" as="image" href={hero.src} fetchpriority="high" /><link slot="head" rel="preload" as="image" href={sky.src} />
   <section class="hero">
-    <div class="sky" style={`background-image:url(${sky.src})`}></div>
+    <Pic pic="sky" name="sky-temple" alt="" sizes="max(100vw, 700px)" now />
     <div class="wrap">
       <div class="hero-copy">
         <h1>Big dreams start close to home.</h1>
         <p class="lead">Pre-Nursery to Class 12 in Bhubaneswar and Jajpur Road. Day school, day boarding and boarding, since 2010.</p>
         <p class="acts"><a class="btn" href="/admissions/#enquire">Plan a school visit</a><a class="more" href="/campus-life/">Look around campus</a></p>
       </div>
-      <div class="hero-sun"><Sun id="hero-clip" src={hero.src} focus="xMidYMid" alt="RIET students in red, orange and green cheering with their teachers, framed by the school's sun emblem" /></div>
+      <div class="hero-sun"><Sun name="assembly-cheer" alt="RIET students in red, orange and green cheering with their teachers, framed by the school's sun emblem" /></div>
     </div>
     <div class="plinth"><div class="wrap"><Ask /></div></div>
   </section>
 
   <section class="wrap asks">
     <h2>The four things every parent asks us first</h2>
-    <div>{asks.map(([q, a, h, l, i]) => <article class={i}><div><h3>{q}</h3><p>{a}</p><a class="more" href={h}>{l}</a></div><Image src={img(i)} alt="" width={420} /></article>)}</div>
+    <div>{asks.map(([q, a, h, l, i]) => <article class={i}><div><h3>{q}</h3><p>{a}</p><a class="more" href={h}>{l}</a></div><Pic name={i} alt="" sizes="(max-width:800px) 150px, 262px" max={560} /></article>)}</div>
   </section>
 
   <section class="year" aria-labelledby="yh">
@@ -58,7 +55,7 @@ const asks = [
             {year.map((_, i) => <polygon class="dray" data-i={i} points="0,-9 400,-30 515,0 400,30 0,9" transform={`translate(500 520) rotate(${-168 + i * 22.3})`} />)}
             <path d="M120 520A380 380 0 0 1 880 520Z" class="ring" />
           </svg>
-          <div class="frames">{year.map((y, i) => <Image src={img(y.i)} alt={y.t} widths={[480, 900]} sizes="(max-width:800px) 80vw, 720px" class={i === 6 ? 'on' : ''} />)}</div>
+          <div class="frames">{year.map((y, i) => <Pic name={y.i} alt={y.t} sizes="(max-width:800px) 80vw, 720px" class={i === 6 ? 'on' : ''} />)}</div>
         </div>
         <div class="tabs" role="tablist" aria-label="School events">{year.map((y, i) => <button role="tab" id={`t${i}`} aria-controls="dial-text" aria-selected={i === 6 ? 'true' : 'false'} tabindex={i === 6 ? 0 : -1} data-d={y.d}>{y.t}</button>)}</div>
         <p class="dial-text" id="dial-text" role="tabpanel" aria-live="polite">{year[6].d}</p>
@@ -73,7 +70,7 @@ const asks = [
   <ClassFinder />
 
   <section class="culture">
-    <Image src={img('sambalpuri-dance')} alt="Three young students in Sambalpuri costume on stage at the annual function" widths={[700, 1440]} sizes="100vw" />
+    <Pic name="sambalpuri-dance" alt="Three young students in Sambalpuri costume on stage at the annual function" sizes="100vw" />
     <div class="ikat" aria-hidden="true"></div>
     <div class="wrap"><h2>Ready for the world. Rooted in Odisha.</h2><p>Olympiads and computers on weekdays, Sambalpuri steps on stage. Our students grow up at ease with both.</p><a class="more" href="/gallery/">See the gallery</a></div>
   </section>
